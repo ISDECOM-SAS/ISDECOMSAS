@@ -315,7 +315,6 @@
         if (tipo==="reporte") { d = {...d, tipoVisita: v('tipoVisitaR'), fecha: v('fechaR'), horaInicio: v('horaInicioR'), horaFinal: v('horaFinalR'), cliente: v('clienteR'), sede: v('sedeR'), servicio: v('servicioR'), materiales: v('materialesR'), estado: v('estadoR'), tecnico: v('tecnicoR')}; }
         else if (tipo==="agenda") { 
             let agendarCal = document.getElementById('syncCalendarA').checked;
-            // ENVIAMOS LA HORA AL SCRIPT
             d = {...d, syncCalendar: agendarCal, fechaServicio: v('fechaA'), horaServicio: v('horaA'), cliente: v('clienteA'), tarea: v('tareaA'), asignado: v('asignadoA'), estado: v('estadoA'), observaciones: v('observacionesA')}; 
         }
         else if (tipo==="dispositivos") { 
@@ -328,12 +327,27 @@
 
         fetch(apiURL, { method: 'POST', headers: {'Content-Type': 'text/plain'}, body: JSON.stringify(d) })
         .then(r => r.json()).then(res => {
-            if (tipo==='dispositivos') alert("✅ TICKET: " + res.idGenerado); else alert("✅ GUARDADO.");
+            
+            // =================================================================
+            // 📲 WHATSAPP: RESUMEN OPERATIVO PARA EL GRUPO (AL ENVIAR REPORTE)
+            // =================================================================
+            if (tipo === 'reporte') {
+                // Armamos el mensaje con los campos solicitados
+                const mensajeWa = "✅ *NUEVO REPORTE ISDECOM*\n\n" +
+                                  "👷‍♂️ *Técnico:* " + v('tecnicoR') + "\n" +
+                                  "🏢 *Cliente:* " + v('clienteR') + "\n" +
+                                  "⏱️ *Horario:* " + v('horaInicioR') + " a " + v('horaFinalR') + "\n\n" +
+                                  "📝 *Descripción del Servicio:*\n" + v('servicioR') + "\n\n" +
+                                  "🛠️ *Materiales Usados:*\n" + v('materialesR');
+                
+                // Abrimos WhatsApp SIN número para que el técnico elija el Grupo
+                const urlWa = "https://api.whatsapp.com/send?text=" + encodeURIComponent(mensajeWa);
+                window.open(urlWa, '_blank');
+            }
+            // =================================================================
+
+            if (tipo==='dispositivos') alert("✅ TICKET: " + res.idGenerado); else alert("✅ GUARDADO EN DRIVE Y EXCEL.");
             document.getElementById('form'+tipo.charAt(0).toUpperCase()+tipo.slice(1)).reset(); mostrarC(tipo.charAt(0).toUpperCase(), false);
             window.scrollTo(0, 0); cargarClientes();
-        }).catch(() => { alert("❌ ERROR."); mostrarC(tipo.charAt(0).toUpperCase(), false); });
+        }).catch(() => { alert("❌ ERROR AL GUARDAR."); mostrarC(tipo.charAt(0).toUpperCase(), false); });
     }
-    function v(id) { return document.getElementById(id) ? document.getElementById(id).value : ""; }
-</script>
-</body>
-</html>
