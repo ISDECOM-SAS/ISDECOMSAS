@@ -215,7 +215,8 @@
         "JUAN FELIPE LOPEZ": "5370",
         "FELIPE DE LOS RIOS": "1397",
         "FRANCISCO SANCHEZ": "1803",
-        "ISDECOM": "5593",
+        "MAURICIO": "8888",
+        "ISDECOM": "5593"
     };
 
     // TU LINK EXACTO DE APPS SCRIPT
@@ -332,7 +333,6 @@
             // 📲 WHATSAPP: RESUMEN OPERATIVO PARA EL GRUPO (AL ENVIAR REPORTE)
             // =================================================================
             if (tipo === 'reporte') {
-                // Armamos el mensaje con los campos solicitados
                 const mensajeWa = "✅ *NUEVO REPORTE ISDECOM*\n\n" +
                                   "👷‍♂️ *Técnico:* " + v('tecnicoR') + "\n" +
                                   "🏢 *Cliente:* " + v('clienteR') + "\n" +
@@ -340,7 +340,6 @@
                                   "📝 *Descripción del Servicio:*\n" + v('servicioR') + "\n\n" +
                                   "🛠️ *Materiales Usados:*\n" + v('materialesR');
                 
-                // Abrimos WhatsApp SIN número para que el técnico elija el Grupo
                 const urlWa = "https://api.whatsapp.com/send?text=" + encodeURIComponent(mensajeWa);
                 window.open(urlWa, '_blank');
             }
@@ -351,3 +350,5 @@
             window.scrollTo(0, 0); cargarClientes();
         }).catch(() => { alert("❌ ERROR AL GUARDAR."); mostrarC(tipo.charAt(0).toUpperCase(), false); });
     }
+    function v(id) { return document.getElementById(id) ? document.getElementById(id).value : ""; }
+</script>
