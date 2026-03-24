@@ -177,7 +177,6 @@
         "JUAN FELIPE LOPEZ": "5370",
         "FELIPE DE LOS RIOS": "1397",
         "FRANCISCO SANCHEZ": "1803",
-        "MAURICIO": "8888",
         "ISDECOM": "5593"
     };
 
@@ -186,153 +185,86 @@
     // =========================================================
     const apiURL = "https://script.google.com/macros/s/AKfycbxKMNJiU367N0PJcXhhr14jzcccGUNiKpSv_tv9AHmF48DrxjQJs8NTwGZSmuHYPs1WgQ/exec";
 
-    // LÓGICA DE INICIO DE SESIÓN
     let tInactividad; const T_LIMITE = 3 * 60 * 1000;
     
-    function cerrar() { 
-        localStorage.removeItem("isdecom");
-        document.getElementById("appScreen").style.display = "none"; 
-        document.getElementById("loginScreen").style.display = "block"; 
-        document.getElementById("pinInput").value = ""; 
-        document.getElementById("userInput").value = ""; 
-        window.scrollTo(0,0); 
-    }
-    
-    function reiniciarT() { 
-        clearTimeout(tInactividad); 
-        if(localStorage.getItem("isdecom")==="ok") tInactividad = setTimeout(cerrar, T_LIMITE); 
-    }
+    function cerrar() { localStorage.removeItem("isdecom"); document.getElementById("appScreen").style.display = "none"; document.getElementById("loginScreen").style.display = "block"; document.getElementById("pinInput").value = ""; document.getElementById("userInput").value = ""; window.scrollTo(0,0); }
+    function reiniciarT() { clearTimeout(tInactividad); if(localStorage.getItem("isdecom")==="ok") tInactividad = setTimeout(cerrar, T_LIMITE); }
     
     window.onload=reiniciarT; document.onmousemove=reiniciarT; document.onkeypress=reiniciarT; document.ontouchstart=reiniciarT; document.onclick=reiniciarT;
     
-    // Si ya tiene sesión iniciada (incluso desde la app principal), entra directo
-    document.addEventListener("DOMContentLoaded", () => { 
-        if(localStorage.getItem("isdecom")==="ok") {
-            iniciarApp(); 
-        }
-    });
+    document.addEventListener("DOMContentLoaded", () => { if(localStorage.getItem("isdecom")==="ok") { iniciarApp(); } });
     
     document.getElementById("btnDesbloquear").addEventListener("click", () => { 
-        let user = document.getElementById("userInput").value;
-        let pass = document.getElementById("pinInput").value;
-        
-        if(user && USUARIOS[user] && USUARIOS[user] === pass) { 
-            localStorage.setItem("isdecom","ok"); 
-            iniciarApp(); 
-        } else { 
-            document.getElementById("errorPin").style.display="block"; 
-            document.getElementById("pinInput").value=""; 
-        }
+        let user = document.getElementById("userInput").value; let pass = document.getElementById("pinInput").value;
+        if(user && USUARIOS[user] && USUARIOS[user] === pass) { localStorage.setItem("isdecom","ok"); iniciarApp(); } else { document.getElementById("errorPin").style.display="block"; document.getElementById("pinInput").value=""; }
     });
     
     document.getElementById("btnSalir").addEventListener("click", cerrar);
 
     function iniciarApp() { 
-        document.getElementById("loginScreen").style.display="none"; 
-        document.getElementById("appScreen").style.display="block"; 
-        document.getElementById("errorPin").style.display="none"; 
-        cargarInventario(); 
-        reiniciarT(); 
+        document.getElementById("loginScreen").style.display="none"; document.getElementById("appScreen").style.display="block"; document.getElementById("errorPin").style.display="none"; 
+        cargarInventario(); reiniciarT(); 
     }
 
-    // =========================================================
-    // LÓGICA DEL INVENTARIO
-    // =========================================================
     function cambiarPestana(seccion) {
-        document.querySelectorAll('.tab').forEach(t => t.classList.remove('activa'));
-        document.querySelectorAll('.seccion-formulario').forEach(s => s.classList.remove('activa'));
-        
-        const tabsMap = { 'consulta': 0, 'herramientas': 1, 'accesorios': 2 };
-        document.querySelectorAll('.tab')[tabsMap[seccion]].classList.add('activa');
-        document.getElementById('seccion' + seccion.charAt(0).toUpperCase() + seccion.slice(1)).classList.add('activa');
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('activa')); document.querySelectorAll('.seccion-formulario').forEach(s => s.classList.remove('activa'));
+        const tabsMap = { 'consulta': 0, 'herramientas': 1, 'accesorios': 2 }; document.querySelectorAll('.tab')[tabsMap[seccion]].classList.add('activa'); document.getElementById('seccion' + seccion.charAt(0).toUpperCase() + seccion.slice(1)).classList.add('activa');
     }
 
+    // ✅ TÉCNICA ANTIBLOQUEO (JSONP) PARA EL FRONTEND
     function cargarInventario() {
-        if(apiURL === "https://script.google.com/macros/s/AKfycbxKMNJiU367N0PJcXhhr14jzcccGUNiKpSv_tv9AHmF48DrxjQJs8NTwGZSmuHYPs1WgQ/exec") { return; }
+        if(apiURL === "PEGAR_AQUI_TU_NUEVO_ENLACE_DE_APPS_SCRIPT") { return; }
+        document.getElementById("loaderConsulta").style.display = "block"; document.getElementById("contenidoInventario").style.display = "none";
+        
+        var s = document.createElement('script'); 
+        s.src = apiURL + (apiURL.includes('?')?'&':'?') + "callback=procesarInventario"; 
+        document.body.appendChild(s);
+    }
 
-        document.getElementById("loaderConsulta").style.display = "block";
-        document.getElementById("contenidoInventario").style.display = "none";
+    function procesarInventario(data) {
+        if(!data) { document.getElementById("loaderConsulta").innerText = "❌ ERROR AL LEER DATOS."; return; }
+        
+        renderTabla("tablaHerramientas", data.herramientas, "herramientas");
+        renderTabla("tablaAccesorios", data.accesorios, "accesorios");
+        
+        const datalist = document.getElementById("listaHerramientas");
+        datalist.innerHTML = "";
+        if(data.herramientas && data.herramientas.length > 0) { data.herramientas.forEach(f => { if(f[1]) datalist.innerHTML += `<option value="${f[1]}">`; }); }
 
-        fetch(apiURL).then(r => r.json()).then(data => {
-            renderTabla("tablaHerramientas", data.herramientas, "herramientas");
-            renderTabla("tablaAccesorios", data.accesorios, "accesorios");
-            
-            const datalist = document.getElementById("listaHerramientas");
-            datalist.innerHTML = "";
-            if(data.herramientas && data.herramientas.length > 0) {
-                data.herramientas.forEach(f => {
-                    if(f[1]) datalist.innerHTML += `<option value="${f[1]}">`;
-                });
-            }
-
-            document.getElementById("loaderConsulta").style.display = "none";
-            document.getElementById("contenidoInventario").style.display = "block";
-        }).catch(e => {
-            document.getElementById("loaderConsulta").innerText = "❌ ERROR DE CONEXIÓN.";
-        });
+        document.getElementById("loaderConsulta").style.display = "none"; document.getElementById("contenidoInventario").style.display = "block";
     }
 
     function renderTabla(idTabla, filas, tipo) {
-        const tbody = document.querySelector(`#${idTabla} tbody`);
-        tbody.innerHTML = ""; 
-
-        if (!filas || filas.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;">No hay registros disponibles.</td></tr>`; return;
-        }
+        const tbody = document.querySelector(`#${idTabla} tbody`); tbody.innerHTML = ""; 
+        if (!filas || filas.length === 0) { tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;">No hay registros.</td></tr>`; return; }
 
         filas.forEach(fila => {
-            let cantidad = parseInt(fila[0]);
-            let claseBadge = cantidad > 0 ? "badge-verde" : (cantidad < 0 ? "badge-rojo" : "");
-            let badge = `<span class="cantidad-badge ${claseBadge}">${cantidad}</span>`;
-
+            let cantidad = parseInt(fila[0]); let claseBadge = cantidad > 0 ? "badge-verde" : (cantidad < 0 ? "badge-rojo" : ""); let badge = `<span class="cantidad-badge ${claseBadge}">${cantidad}</span>`;
             let tr = document.createElement("tr");
-            if (tipo === "herramientas") {
-                tr.innerHTML = `<td>${badge}</td><td>${fila[1]}</td>`;
-            } else {
-                let pVentaFormat = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(fila[5] || 0);
-                tr.innerHTML = `<td>${badge}</td><td><b>${fila[1]}</b><br>${fila[2]}</td><td>${fila[3]}</td><td>${pVentaFormat}</td>`;
-            }
+            if (tipo === "herramientas") { tr.innerHTML = `<td>${badge}</td><td>${fila[1]}</td>`; } 
+            else { let pVentaFormat = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(fila[5] || 0); tr.innerHTML = `<td>${badge}</td><td><b>${fila[1]}</b><br>${fila[2]}</td><td>${fila[3]}</td><td>${pVentaFormat}</td>`; }
             tbody.appendChild(tr);
         });
     }
 
     function procesarFormulario(tipo, payload, idFormulario, letraId) {
-        document.getElementById(`loader${letraId}`).style.display = 'block';
-        document.getElementById(`btnEnviar${letraId}`).style.display = 'none';
+        document.getElementById(`loader${letraId}`).style.display = 'block'; document.getElementById(`btnEnviar${letraId}`).style.display = 'none';
         
         fetch(apiURL, { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify(payload) })
         .then(r => r.json()).then(res => {
             alert(`✅ INVENTARIO ACTUALIZADO CON ÉXITO.`);
-            document.getElementById(idFormulario).reset();
-            document.getElementById(`loader${letraId}`).style.display = 'none';
-            document.getElementById(`btnEnviar${letraId}`).style.display = 'block';
+            document.getElementById(idFormulario).reset(); document.getElementById(`loader${letraId}`).style.display = 'none'; document.getElementById(`btnEnviar${letraId}`).style.display = 'block';
             cambiarPestana('consulta'); cargarInventario();
-        }).catch(err => {
-            alert("❌ ERROR AL CONECTAR CON EL SERVIDOR.");
-            document.getElementById(`loader${letraId}`).style.display = 'none';
-            document.getElementById(`btnEnviar${letraId}`).style.display = 'block';
-        });
+        }).catch(err => { alert("❌ ERROR AL CONECTAR CON EL SERVIDOR."); document.getElementById(`loader${letraId}`).style.display = 'none'; document.getElementById(`btnEnviar${letraId}`).style.display = 'block'; });
     }
 
     document.getElementById("formHerramientas").addEventListener("submit", (e) => {
-        e.preventDefault();
-        let operacion = document.querySelector('input[name="operacionH"]:checked').value;
-        let cantidadIngresada = parseInt(document.getElementById("cantidadH").value);
-        if (operacion === "retiro") cantidadIngresada = -Math.abs(cantidadIngresada); 
-
-        let payload = { tipo: "herramientas", herramienta: document.getElementById("nombreH").value, cantidad: cantidadIngresada };
-        procesarFormulario("herramientas", payload, "formHerramientas", "H");
+        e.preventDefault(); let operacion = document.querySelector('input[name="operacionH"]:checked').value; let cantidadIngresada = parseInt(document.getElementById("cantidadH").value); if (operacion === "retiro") cantidadIngresada = -Math.abs(cantidadIngresada); 
+        procesarFormulario("herramientas", { tipo: "herramientas", herramienta: document.getElementById("nombreH").value, cantidad: cantidadIngresada }, "formHerramientas", "H");
     });
 
     document.getElementById("formAccesorios").addEventListener("submit", (e) => {
-        e.preventDefault();
-        let operacion = document.querySelector('input[name="operacionA"]:checked').value;
-        let cantidadIngresada = parseInt(document.getElementById("cantidadA").value);
-        if (operacion === "retiro") cantidadIngresada = -Math.abs(cantidadIngresada); 
-
-        let payload = { tipo: "accesorios", marca: document.getElementById("marcaA").value, modelo: document.getElementById("modeloA").value, serial: document.getElementById("serialA").value, cantidad: cantidadIngresada, precioCompra: document.getElementById("pCompraA").value, precioVenta: document.getElementById("pVentaA").value };
-        procesarFormulario("accesorios", payload, "formAccesorios", "A");
+        e.preventDefault(); let operacion = document.querySelector('input[name="operacionA"]:checked').value; let cantidadIngresada = parseInt(document.getElementById("cantidadA").value); if (operacion === "retiro") cantidadIngresada = -Math.abs(cantidadIngresada); 
+        procesarFormulario("accesorios", { tipo: "accesorios", marca: document.getElementById("marcaA").value, modelo: document.getElementById("modeloA").value, serial: document.getElementById("serialA").value, cantidad: cantidadIngresada, precioCompra: document.getElementById("pCompraA").value, precioVenta: document.getElementById("pVentaA").value }, "formAccesorios", "A");
     });
 </script>
-</body>
-</html>
