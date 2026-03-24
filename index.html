@@ -31,6 +31,9 @@
         .seccion-formulario { display: none; } .seccion-formulario.activa { display: block; }
         #btnSalir { position: absolute; top: 0; right: 0; background: #fce8e6; color: #c53929; border: none; padding: 6px 12px; border-radius: 6px; font-weight: bold; }
         .checkbox-container { display: flex; align-items: center; gap: 8px; color: var(--azul-principal); cursor: pointer; background: #e5f4fb; padding: 10px; border-radius: 8px; margin-top: 10px; font-weight: bold; }
+        
+        /* Etiqueta decorativa para mostrar el usuario logueado */
+        .user-badge { display: inline-block; background: #e8f0fe; color: #1967d2; padding: 4px 10px; border-radius: 12px; font-size: 10px; font-weight: bold; margin-bottom: 10px; }
     </style>
 </head>
 <body>
@@ -39,7 +42,7 @@
 
 <div class="form-container" id="loginScreen">
     <div class="header-container"><img src="https://drive.google.com/thumbnail?id=1eVECUsGoJe41dSoOIG0uWgzElK70Uqj-&sz=w500" class="logo-isdecom">
-    <h2>ACCESO AL SISTEMA</h2></div>
+    <h2>ACCESO AL SISTEMA OPERATIVO</h2></div>
     
     <label>SELECCIONE SU USUARIO:</label>
     <select id="userInput" style="text-align: center; font-size: 14px; font-weight: bold;">
@@ -61,7 +64,11 @@
 </div>
 
 <div class="form-container" id="appScreen" style="display: none;">
-    <div class="header-container"><button id="btnSalir">🔒 SALIR</button><img src="https://drive.google.com/thumbnail?id=1eVECUsGoJe41dSoOIG0uWgzElK70Uqj-&sz=w500" class="logo-isdecom"></div>
+    <div class="header-container">
+        <button id="btnSalir">🔒 SALIR</button>
+        <img src="https://drive.google.com/thumbnail?id=1eVECUsGoJe41dSoOIG0uWgzElK70Uqj-&sz=w500" class="logo-isdecom">
+        <div id="displayUsuario" class="user-badge">👤 TÉCNICO: CARGANDO...</div>
+    </div>
 
     <div class="tabs">
         <div class="tab activa" onclick="cambiarPestana('reporte')"><span>📝</span> REPORTE</div>
@@ -94,11 +101,10 @@
 
             <label>DESCRIPCIÓN *</label><textarea id="servicioR" rows="2" required></textarea>
             <label>MATERIALES *</label><textarea id="materialesR" rows="2" required></textarea>
-            <label>ESTADO *</label><select id="estadoR" required><option>REALIZADO</option><option>EN PROCESO</option><option>PENDIENTE</option></select>
+            <label>ESTADO DEL SERVICIO *</label><select id="estadoR" required><option>REALIZADO</option><option>EN PROCESO</option><option>PENDIENTE</option></select>
             <label>EVIDENCIAS (FOTOS Y VIDEOS)</label>
             <input type="file" id="fotoUploadR" accept="image/*, video/mp4, video/quicktime, video/webm" multiple>
-            <label>TÉCNICO *</label><select id="tecnicoR" required><option value="" disabled selected>SELECCIONE...</option><option>JUAN CAMILO COY</option><option>ANDRES FELIPE HENAO</option><option>CAMILO HERRERA</option><option>FELIPE DE LOS RIOS</option><option>JUAN FELIPE LOPEZ</option><option>FRANCISCO SANCHEZ</option><option>ALEXANDER</option><option>COPY</option><option>ISDECOM</option></select>
-            <button type="submit" id="btnEnviarR" class="btn-accion">ENVIAR</button>
+            <button type="submit" id="btnEnviarR" class="btn-accion">ENVIAR REPORTE</button>
             <div class="loader" id="loaderR">GUARDANDO... ⏳</div>
         </form>
     </div>
@@ -120,10 +126,9 @@
                 <div class="columna"><label>HORA (Opcional)</label><input type="time" id="horaA"></div>
             </div>
 
-            <label>ASIGNADO *</label><select id="asignadoA" required><option value="" disabled selected>SELECCIONE...</option><option>ISDECOM</option></select>
-            <label>ESTADO *</label><select id="estadoA" required><option>PENDIENTE</option></select>
+            <label>ASIGNADO A *</label><select id="asignadoA" required><option value="" disabled selected>SELECCIONE...</option><option>ISDECOM</option></select>
             <label>OBSERVACIONES</label><textarea id="observacionesA" rows="2"></textarea>
-            <button type="submit" id="btnEnviarA" class="btn-accion">AGENDAR</button>
+            <button type="submit" id="btnEnviarA" class="btn-accion">AGENDAR (SE GUARDARÁ COMO PENDIENTE)</button>
             <div class="loader" id="loaderA">GUARDANDO... ⏳</div>
         </form>
     </div>
@@ -139,11 +144,10 @@
             </div>
             <label>EQUIPO/MARCA/MODELO/SERIAL *</label><textarea id="equipoD" rows="2" required></textarea>
             <label>ACTIVIDAD *</label><textarea id="actividadD" rows="2" required></textarea>
-            <label>ESTADO *</label><select id="estadoD" required><option value="" disabled selected>SELECCIONE...</option><option>PENDIENTE</option></select>
             <label>OBSERVACIONES</label><textarea id="observacionesD" rows="2"></textarea>
             <label>EVIDENCIAS INGRESO</label>
             <input type="file" id="fotoUploadD" accept="image/*, video/mp4, video/quicktime, video/webm" multiple>
-            <button type="submit" id="btnEnviarD" class="btn-accion">REGISTRAR</button>
+            <button type="submit" id="btnEnviarD" class="btn-accion">REGISTRAR INGRESO</button>
             <div class="loader" id="loaderD">GUARDANDO... ⏳</div>
         </form>
     </div>
@@ -154,12 +158,11 @@
             <label>FECHA *</label><input type="date" id="fechaC" required>
             <label>CLIENTE *</label><input list="opcionesClientes" id="clienteC" class="inputClienteCompartido" required>
             <label>ACTIVIDAD *</label><textarea id="actividadC" rows="2" required></textarea>
-            <label>TÉCNICO QUE DEJA *</label><select id="tecnicoDejaC" required><option value="" disabled selected>SELECCIONE...</option><option>NINGUNO</option><option>JUAN CAMILO COY</option><option>ANDRES FELIPE HENAO</option><option>CAMILO HERRERA</option><option>FELIPE DE LOS RIOS</option><option>JUAN FELIPE LOPEZ</option><option>FRANCISCO SANCHEZ</option><option>ALEXANDER</option><option>COPY</option></select>
+            <label>TÉCNICO QUE DEJA *</label><select id="tecnicoDejaC" required><option value="" disabled selected>SELECCIONE...</option><option>NINGUNO</option><option>JUAN CAMILO COY</option><option>ANDRES FELIPE HENAO</option><option>CAMILO HERRERA</option><option>FELIPE DE LOS RIOS</option><option>JUAN FELIPE LOPEZ</option><option>FRANCISCO SANCHEZ</option><option>ALEXANDER</option><option>MAURICIO</option><option>COPY</option></select>
             <label>EVIDENCIAS INGRESO</label>
             <input type="file" id="fotoUploadC" accept="image/*, video/mp4, video/quicktime, video/webm" multiple>
             <label>OBSERVACIONES</label><textarea id="observacionesC" rows="2"></textarea>
-            <label>ESTADO *</label><select id="estadoC" required><option value="" disabled selected>SELECCIONE...</option><option>PENDIENTE</option></select>          
-            <button type="submit" id="btnEnviarC" class="btn-accion">REGISTRAR</button>
+            <button type="submit" id="btnEnviarC" class="btn-accion">REGISTRAR IMPRESORA</button>
             <div class="loader" id="loaderC">GUARDANDO... ⏳</div>
         </form>
     </div>
@@ -171,9 +174,8 @@
             <label>CLIENTE *</label><input list="opcionesClientes" id="clienteE" class="inputClienteCompartido" required>
             <label>DISPOSITIVO *</label><textarea id="actividadE" rows="2" required></textarea>
             <label>OBSERVACIONES</label><textarea id="observacionesE" rows="2"></textarea>
-            <label>ESTADO *</label><select id="estadoE" required><option value="" disabled selected>SELECCIONE...</option><option>PENDIENTE</option></select>
             <label>ELECTRÓNICO *</label><select id="electronicoE" required><option value="" disabled selected>SELECCIONE...</option><option>NINGUNO</option><option>ALEXANDER RAMIREZ</option><option>LAPTECH</option></select>
-            <button type="submit" id="btnEnviarE" class="btn-accion">REGISTRAR</button>
+            <button type="submit" id="btnEnviarE" class="btn-accion">REGISTRAR DISPOSITIVO</button>
             <div class="loader" id="loaderE">GUARDANDO... ⏳</div>
         </form>
     </div>
@@ -184,7 +186,6 @@
             <label>FECHA *</label><input type="date" id="fechaS" required>
             <label>CLIENTE *</label><input list="opcionesClientes" id="clienteS" class="inputClienteCompartido" required>
             <label>ACTIVIDAD *</label><textarea id="actividadS" rows="2" required></textarea>
-            <label>ESTADO *</label><select id="estadoS" required><option>PENDIENTE</option></select>
             <div class="dos-columnas">
                 <div class="columna">
                     <label>ASIGNADO POR *</label>
@@ -198,7 +199,7 @@
             <label>TIPO CLIENTE *</label>
             <select id="tipoClienteS" required><option value="" disabled selected>SELECCIONE...</option><option>CONTRATO</option><option>PARTICULAR</option><option>VIP</option></select>
             <label>OBSERVACIONES</label><textarea id="observacionesS" rows="2"></textarea>
-            <button type="submit" id="btnEnviarS" class="btn-accion">GUARDAR</button>
+            <button type="submit" id="btnEnviarS" class="btn-accion">GUARDAR TAREA</button>
             <div class="loader" id="loaderS">GUARDANDO... ⏳</div>
         </form>
     </div>
@@ -218,7 +219,7 @@
         "ISDECOM": "5593"
     };
 
-    // TU LINK EXACTO DE APPS SCRIPT
+    // 🔗 PEGA AQUÍ TU ENLACE DE APPS SCRIPT DE LA APP PRINCIPAL
     const apiURL = "https://script.google.com/macros/s/AKfycbySWEZLtq99Vw3G3DRtnAzfkiVlKFMUYcuJzqeMNbTA5jbCZ7Oc_cxk-PG9A6PTuBthNA/exec";
 
     function cambiarPestana(seccion) {
@@ -230,19 +231,30 @@
     }
 
     let tInactividad; const T_LIMITE = 3 * 60 * 1000;
-    function cerrar() { localStorage.removeItem("isdecom"); document.getElementById("appScreen").style.display = "none"; document.getElementById("loginScreen").style.display = "block"; document.getElementById("pinInput").value = ""; document.getElementById("userInput").value = ""; window.scrollTo(0,0); }
+    
+    function cerrar() { 
+        localStorage.removeItem("isdecom"); 
+        localStorage.removeItem("isdecomUser");
+        document.getElementById("appScreen").style.display = "none"; 
+        document.getElementById("loginScreen").style.display = "block"; 
+        document.getElementById("pinInput").value = ""; 
+        document.getElementById("userInput").value = ""; 
+        window.scrollTo(0,0); 
+    }
+    
     function reiniciarT() { clearTimeout(tInactividad); if(localStorage.getItem("isdecom")==="ok") tInactividad = setTimeout(cerrar, T_LIMITE); }
     window.onload=reiniciarT; document.onmousemove=reiniciarT; document.onkeypress=reiniciarT; document.ontouchstart=reiniciarT; document.onclick=reiniciarT;
     
     document.addEventListener("DOMContentLoaded", () => { if(localStorage.getItem("isdecom")==="ok") iniciarApp(); });
     
-    // Validar el Usuario seleccionado y su Contraseña
+    // Validar Login y guardar el Usuario para la Auto-Identificación
     document.getElementById("btnDesbloquear").addEventListener("click", () => { 
         let user = document.getElementById("userInput").value;
         let pass = document.getElementById("pinInput").value;
         
         if(user && USUARIOS[user] && USUARIOS[user] === pass) { 
             localStorage.setItem("isdecom","ok"); 
+            localStorage.setItem("isdecomUser", user); // Guardamos quién es el técnico
             iniciarApp(); 
         } else { 
             document.getElementById("errorPin").style.display="block"; 
@@ -252,9 +264,21 @@
     
     document.getElementById("btnSalir").addEventListener("click", cerrar);
 
-    function iniciarApp() { document.getElementById("loginScreen").style.display="none"; document.getElementById("appScreen").style.display="block"; document.getElementById("errorPin").style.display="none"; cargarClientes(); reiniciarT(); }
+    function iniciarApp() { 
+        document.getElementById("loginScreen").style.display="none"; 
+        document.getElementById("appScreen").style.display="block"; 
+        document.getElementById("errorPin").style.display="none"; 
+        
+        // Mostrar el nombre del técnico en la cabecera
+        let usuarioActual = localStorage.getItem("isdecomUser") || "DESCONOCIDO";
+        document.getElementById("displayUsuario").innerText = "👤 TÉCNICO: " + usuarioActual;
+        
+        cargarClientes(); 
+        reiniciarT(); 
+    }
 
     function cargarClientes() {
+        if(apiURL === "PEGAR_AQUI_TU_ENLACE_DE_APPS_SCRIPT_DE_REPORTES") return;
         const i = document.querySelectorAll('.inputClienteCompartido'); i.forEach(inp => inp.placeholder = "⏳ CONECTANDO...");
         var s = document.createElement('script'); s.src = apiURL + (apiURL.includes('?')?'&':'?') + "callback=procesarClientes"; document.body.appendChild(s);
     }
@@ -284,16 +308,12 @@
     }
 
     async function procArchivos(id) {
-        const input = document.getElementById(id);
-        if(!input) return [];
+        const input = document.getElementById(id); if(!input) return [];
         const f = input.files; let arr = [];
         if(f.length>0){ 
             let p=[]; 
             for(let i=0; i<f.length; i++) {
-                if(f[i].type.startsWith('video/') && f[i].size > 15728640) {
-                    alert("⚠️ EL VIDEO '" + f[i].name + "' PESA MÁS DE 15MB. ELIMÍNALO Y GRABA UNO MÁS CORTO.");
-                    continue; 
-                }
+                if(f[i].type.startsWith('video/') && f[i].size > 15728640) { alert("⚠️ EL VIDEO '" + f[i].name + "' PESA MÁS DE 15MB. ELIMÍNALO Y GRABA UNO MÁS CORTO."); continue; }
                 p.push(procesarArchivo(f[i])); 
             }
             arr = await Promise.all(p); 
@@ -310,26 +330,36 @@
     function mostrarC(t, e) { document.getElementById('loader'+t).style.display = e?'block':'none'; document.getElementById('btnEnviar'+t).style.display = e?'none':'block'; }
 
     function enviar(tipo, arr) {
+        // ✅ AUTO-IDENTIFICACIÓN: Capturamos al técnico logueado sin preguntarle
+        let usuarioActual = localStorage.getItem("isdecomUser") || "DESCONOCIDO";
         let d = { tipoFormulario: tipo, fotos: arr };
         
-        if (tipo==="reporte") { d = {...d, tipoVisita: v('tipoVisitaR'), fecha: v('fechaR'), horaInicio: v('horaInicioR'), horaFinal: v('horaFinalR'), cliente: v('clienteR'), sede: v('sedeR'), servicio: v('servicioR'), materiales: v('materialesR'), estado: v('estadoR'), tecnico: v('tecnicoR')}; }
+        if (tipo==="reporte") { 
+            d = {...d, tipoVisita: v('tipoVisitaR'), fecha: v('fechaR'), horaInicio: v('horaInicioR'), horaFinal: v('horaFinalR'), cliente: v('clienteR'), sede: v('sedeR'), servicio: v('servicioR'), materiales: v('materialesR'), estado: v('estadoR'), tecnico: usuarioActual}; 
+        }
         else if (tipo==="agenda") { 
             let agendarCal = document.getElementById('syncCalendarA').checked;
-            d = {...d, syncCalendar: agendarCal, fechaServicio: v('fechaA'), horaServicio: v('horaA'), cliente: v('clienteA'), tarea: v('tareaA'), asignado: v('asignadoA'), estado: v('estadoA'), observaciones: v('observacionesA')}; 
+            d = {...d, syncCalendar: agendarCal, fechaServicio: v('fechaA'), horaServicio: v('horaA'), cliente: v('clienteA'), tarea: v('tareaA'), asignado: v('asignadoA'), estado: "PENDIENTE", observaciones: v('observacionesA')}; 
         }
         else if (tipo==="dispositivos") { 
-            d = {...d, fecha: v('fechaD'), cliente: v('clienteD'), telefono: v('telefonoD'), equipo: v('equipoD'), contrasena: v('contrasenaD'), actividad: v('actividadD'), estado: v('estadoD'), observaciones: v('observacionesD')}; 
+            d = {...d, fecha: v('fechaD'), cliente: v('clienteD'), telefono: v('telefonoD'), equipo: v('equipoD'), contrasena: v('contrasenaD'), actividad: v('actividadD'), estado: "PENDIENTE", observaciones: v('observacionesD')}; 
         }
-        else if (tipo==="copy") { d = {...d, fecha: v('fechaC'), cliente: v('clienteC'), actividad: v('actividadC'), tecnicoDeja: v('tecnicoDejaC'), estado: v('estadoC'), observaciones: v('observacionesC')}; }
-        else if (tipo==="electronicos") { d = {...d, fecha: v('fechaE'), cliente: v('clienteE'), electronico: v('electronicoE'), actividad: v('actividadE'), estado: v('estadoE'), observaciones: v('observacionesE')}; }
-        else if (tipo==="semaforo") { d = {...d, fecha: v('fechaS'), cliente: v('clienteS'), actividad: v('actividadS'), asignadoPor: v('asignadoPorS'), revisadoPor: v('revisadoPorS'), estado: v('estadoS'), tipoCliente: v('tipoClienteS'), observaciones: v('observacionesS')}; }
+        else if (tipo==="copy") { 
+            d = {...d, fecha: v('fechaC'), cliente: v('clienteC'), actividad: v('actividadC'), tecnicoDeja: v('tecnicoDejaC'), estado: "PENDIENTE", observaciones: v('observacionesC')}; 
+        }
+        else if (tipo==="electronicos") { 
+            d = {...d, fecha: v('fechaE'), cliente: v('clienteE'), electronico: v('electronicoE'), actividad: v('actividadE'), estado: "PENDIENTE", observaciones: v('observacionesE')}; 
+        }
+        else if (tipo==="semaforo") { 
+            d = {...d, fecha: v('fechaS'), cliente: v('clienteS'), actividad: v('actividadS'), asignadoPor: v('asignadoPorS'), revisadoPor: v('revisadoPorS'), estado: "PENDIENTE", tipoCliente: v('tipoClienteS'), observaciones: v('observacionesS')}; 
+        }
 
         fetch(apiURL, { method: 'POST', headers: {'Content-Type': 'text/plain'}, body: JSON.stringify(d) })
         .then(r => r.json()).then(res => {
             
             if (tipo === 'reporte') {
                 const mensajeWa = "✅ *NUEVO REPORTE ISDECOM*\n\n" +
-                                  "👷‍♂️ *Técnico:* " + v('tecnicoR') + "\n" +
+                                  "👷‍♂️ *Técnico:* " + usuarioActual + "\n" +
                                   "🏢 *Cliente:* " + v('clienteR') + "\n" +
                                   "⏱️ *Horario:* " + v('horaInicioR') + " a " + v('horaFinalR') + "\n\n" +
                                   "📝 *Descripción del Servicio:*\n" + v('servicioR') + "\n\n" +
