@@ -10,9 +10,14 @@
         body, input, select, button, .tab, table { font-family: 'Calibri', sans-serif; font-size: 13px; text-transform: uppercase; }
         body { background-color: var(--fondo-app); margin: 0; padding: 10px; color: var(--gris-texto); }
         .form-container { background: white; max-width: 600px; margin: 10px auto; padding: 20px; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); position: relative; }
-        .header-container { text-align: center; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 2px solid #f0f0f0; }
+        .header-container { text-align: center; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 2px solid #f0f0f0; position: relative; }
         .logo-isdecom { max-width: 150px; height: auto; margin-bottom: 5px; }
         h2 { color: var(--azul-principal); margin: 0 0 5px 0; font-size: 15px; text-align: center;}
+        
+        /* 🔐 Estilos del Login */
+        #loginScreen { text-align: center; margin-top: 40px; }
+        .pin-input { text-align: center; font-size: 20px; letter-spacing: 10px; font-weight: bold; color: var(--azul-principal); }
+        #btnSalir { position: absolute; top: 0; right: 0; background: #fce8e6; color: #c53929; border: none; padding: 6px 12px; border-radius: 6px; font-weight: bold; cursor: pointer; }
         
         .tabs { display: flex; gap: 5px; margin-bottom: 20px; background-color: white; }
         .tab { flex: 1; text-align: center; padding: 10px 5px; font-weight: bold; cursor: pointer; color: var(--gris-texto); background-color: #f0f0f0; border-radius: 6px; font-size: 12px;}
@@ -49,8 +54,35 @@
 
 <datalist id="listaHerramientas"></datalist>
 
-<div class="form-container">
+<div class="form-container" id="loginScreen">
     <div class="header-container">
+        <img src="https://drive.google.com/thumbnail?id=1eVECUsGoJe41dSoOIG0uWgzElK70Uqj-&sz=w500" class="logo-isdecom" alt="ISDECOM">
+        <h2>ACCESO AL INVENTARIO</h2>
+    </div>
+    
+    <label>SELECCIONE SU USUARIO:</label>
+    <select id="userInput" style="text-align: center; font-size: 14px; font-weight: bold;">
+        <option value="" disabled selected>-- SELECCIONE --</option>
+        <option value="JUAN CAMILO COY">JUAN CAMILO COY</option>
+        <option value="ANDRES FELIPE HENAO">ANDRES FELIPE HENAO</option>
+        <option value="CAMILO HERRERA">CAMILO HERRERA</option>
+        <option value="JUAN FELIPE LOPEZ">JUAN FELIPE LOPEZ</option>
+        <option value="FELIPE DE LOS RIOS">FELIPE DE LOS RIOS</option>
+        <option value="FRANCISCO SANCHEZ">FRANCISCO SANCHEZ</option>
+        <option value="MAURICIO">MAURICIO</option>
+        <option value="ISDECOM">ISDECOM</option>
+    </select>
+    
+    <label>CONTRASEÑA:</label>
+    <input type="password" id="pinInput" class="pin-input" placeholder="••••" autocomplete="off">
+    
+    <p id="errorPin" style="color: #e11d48; display: none; font-weight: bold; margin-top: 10px; text-align: center;">❌ CONTRASEÑA INCORRECTA</p>
+    <button id="btnDesbloquear" class="btn-accion">🔒 INGRESAR</button>
+</div>
+
+<div class="form-container" id="appScreen" style="display: none;">
+    <div class="header-container">
+        <button id="btnSalir">🔒 SALIR</button>
         <img src="https://drive.google.com/thumbnail?id=1eVECUsGoJe41dSoOIG0uWgzElK70Uqj-&sz=w500" class="logo-isdecom" alt="ISDECOM">
         <h2>SISTEMA DE INVENTARIO</h2>
     </div>
@@ -133,15 +165,80 @@
             <div class="loader" id="loaderA">GUARDANDO EN LA BASE DE DATOS... ⏳</div>
         </form>
     </div>
-
 </div>
 
 <script>
     // =========================================================
+    // 🔐 GESTIÓN DE USUARIOS Y CONTRASEÑAS
+    // =========================================================
+    const USUARIOS = {
+        "JUAN CAMILO COY": "2905",
+        "ANDRES FELIPE HENAO": "9666",
+        "CAMILO HERRERA": "1053",
+        "JUAN FELIPE LOPEZ": "5370",
+        "FELIPE DE LOS RIOS": "1397",
+        "FRANCISCO SANCHEZ": "1803",
+        "MAURICIO": "8888",
+        "ISDECOM": "5593"
+    };
+
+    // =========================================================
     // 🔗 PEGA AQUÍ TU NUEVO ENLACE DE APPS SCRIPT DE INVENTARIO
     // =========================================================
-    const apiURL = "https://script.google.com/macros/s/AKfycbxKMNJiU367N0PJcXhhr14jzcccGUNiKpSv_tv9AHmF48DrxjQJs8NTwGZSmuHYPs1WgQ/exec";
+    const apiURL = "PEGAR_AQUI_TU_NUEVO_ENLACE_DE_APPS_SCRIPT";
 
+    // LÓGICA DE INICIO DE SESIÓN
+    let tInactividad; const T_LIMITE = 3 * 60 * 1000;
+    
+    function cerrar() { 
+        localStorage.removeItem("isdecom"); 
+        document.getElementById("appScreen").style.display = "none"; 
+        document.getElementById("loginScreen").style.display = "block"; 
+        document.getElementById("pinInput").value = ""; 
+        document.getElementById("userInput").value = ""; 
+        window.scrollTo(0,0); 
+    }
+    
+    function reiniciarT() { 
+        clearTimeout(tInactividad); 
+        if(localStorage.getItem("isdecom")==="ok") tInactividad = setTimeout(cerrar, T_LIMITE); 
+    }
+    
+    window.onload=reiniciarT; document.onmousemove=reiniciarT; document.onkeypress=reiniciarT; document.ontouchstart=reiniciarT; document.onclick=reiniciarT;
+    
+    // Si ya tiene sesión iniciada (incluso desde la app principal), entra directo
+    document.addEventListener("DOMContentLoaded", () => { 
+        if(localStorage.getItem("isdecom")==="ok") {
+            iniciarApp(); 
+        }
+    });
+    
+    document.getElementById("btnDesbloquear").addEventListener("click", () => { 
+        let user = document.getElementById("userInput").value;
+        let pass = document.getElementById("pinInput").value;
+        
+        if(user && USUARIOS[user] && USUARIOS[user] === pass) { 
+            localStorage.setItem("isdecom","ok"); 
+            iniciarApp(); 
+        } else { 
+            document.getElementById("errorPin").style.display="block"; 
+            document.getElementById("pinInput").value=""; 
+        }
+    });
+    
+    document.getElementById("btnSalir").addEventListener("click", cerrar);
+
+    function iniciarApp() { 
+        document.getElementById("loginScreen").style.display="none"; 
+        document.getElementById("appScreen").style.display="block"; 
+        document.getElementById("errorPin").style.display="none"; 
+        cargarInventario(); 
+        reiniciarT(); 
+    }
+
+    // =========================================================
+    // LÓGICA DEL INVENTARIO
+    // =========================================================
     function cambiarPestana(seccion) {
         document.querySelectorAll('.tab').forEach(t => t.classList.remove('activa'));
         document.querySelectorAll('.seccion-formulario').forEach(s => s.classList.remove('activa'));
@@ -151,10 +248,8 @@
         document.getElementById('seccion' + seccion.charAt(0).toUpperCase() + seccion.slice(1)).classList.add('activa');
     }
 
-    document.addEventListener("DOMContentLoaded", () => { cargarInventario(); });
-
     function cargarInventario() {
-        if(apiURL === "PEGAR_AQUI_TU_NUEVO_ENLACE_DE_APPS_SCRIPT") { return; }
+        if(apiURL === "https://script.google.com/macros/s/AKfycbxKMNJiU367N0PJcXhhr14jzcccGUNiKpSv_tv9AHmF48DrxjQJs8NTwGZSmuHYPs1WgQ/exec") { return; }
 
         document.getElementById("loaderConsulta").style.display = "block";
         document.getElementById("contenidoInventario").style.display = "none";
@@ -163,7 +258,6 @@
             renderTabla("tablaHerramientas", data.herramientas, "herramientas");
             renderTabla("tablaAccesorios", data.accesorios, "accesorios");
             
-            // ✅ CARGAR EL DESPLEGABLE INTELIGENTE DE HERRAMIENTAS
             const datalist = document.getElementById("listaHerramientas");
             datalist.innerHTML = "";
             if(data.herramientas && data.herramientas.length > 0) {
