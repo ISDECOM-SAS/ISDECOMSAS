@@ -119,7 +119,7 @@
 
         <div id="seccionAgenda" class="seccion-formulario">
             <div class="card">
-                <h2 class="card-title">📅 AGENDA</h2>
+                <h2 class="card-title">📅 NUEVA CITA</h2>
                 <form id="formAgenda">
                     <div class="input-group"><label>CLIENTE *</label><input list="opcionesClientes" id="clienteA" class="inputClienteCompartido" required></div>
                     <label class="checkbox-container"><input type="checkbox" id="syncCalendarA" style="width: auto;"> Sincronizar en Google Calendar</label>
@@ -154,16 +154,16 @@
             </div>
         </div>
 
-        <div id="seccionCopy" class="seccion-formulario">
+        <div id="seccionImpresoras" class="seccion-formulario">
             <div class="card">
-                <h2 class="card-title">🖨️ IMPRESORAS</h2>
-                <form id="formCopy">
-                    <div class="input-group"><label>FECHA *</label><input type="date" id="fechaC" required></div>
-                    <div class="input-group"><label>CLIENTE *</label><input list="opcionesClientes" id="clienteC" class="inputClienteCompartido" required></div>
-                    <div class="input-group"><label>ACTIVIDAD / REPORTE *</label><textarea id="actividadC" rows="3" required></textarea></div>
-                    <div class="input-group"><label>TÉCNICO QUE DEJA *</label><select id="tecnicoDejaC" required><option value="" disabled selected>SELECCIONE...</option><option>NINGUNO</option><option>JUAN CAMILO COY</option><option>ANDRES FELIPE HENAO</option><option>CAMILO HERRERA</option><option>FELIPE DE LOS RIOS</option><option>JUAN FELIPE LOPEZ</option><option>FRANCISCO SANCHEZ</option><option>ALEXANDER</option><option>MAURICIO</option><option>COPY</option></select></div>
-                    <div class="input-group"><label>OBSERVACIONES</label><textarea id="observacionesC" rows="2"></textarea></div>
-                    <div class="input-group"><label>📸 EVIDENCIAS (Opcional)</label><input type="file" id="fotoUploadC" accept="image/*, video/*" multiple></div>
+                <h2 class="card-title">🖨️ MÓDULO IMPRESORAS</h2>
+                <form id="formImpresoras">
+                    <div class="input-group"><label>FECHA *</label><input type="date" id="fechaI" required></div>
+                    <div class="input-group"><label>CLIENTE *</label><input list="opcionesClientes" id="clienteI" class="inputClienteCompartido" required></div>
+                    <div class="input-group"><label>ACTIVIDAD / REPORTE *</label><textarea id="actividadI" rows="3" required></textarea></div>
+                    <div class="input-group"><label>TÉCNICO QUE DEJA *</label><select id="tecnicoDejaI" required><option value="" disabled selected>SELECCIONE...</option><option>NINGUNO</option><option>JUAN CAMILO COY</option><option>ANDRES FELIPE HENAO</option><option>CAMILO HERRERA</option><option>FELIPE DE LOS RIOS</option><option>JUAN FELIPE LOPEZ</option><option>FRANCISCO SANCHEZ</option><option>ALEXANDER</option><option>MAURICIO</option><option>IMPRESORAS</option></select></div>
+                    <div class="input-group"><label>OBSERVACIONES</label><textarea id="observacionesI" rows="2"></textarea></div>
+                    <div class="input-group"><label>📸 EVIDENCIAS (Opcional)</label><input type="file" id="fotoUploadI" accept="image/*, video/*" multiple></div>
                     <button type="submit" class="btn-primary">REGISTRAR IMPRESORA</button>
                 </form>
             </div>
@@ -206,9 +206,9 @@
     <div class="bottom-nav">
         <div class="nav-item activa" onclick="cambiarPestana('reporte')"><span class="icon">📝</span><span>Reporte</span></div>
         <div class="nav-item" onclick="cambiarPestana('agenda')"><span class="icon">📅</span><span>Agenda</span></div>
-        <div class="nav-item" onclick="cambiarPestana('dispositivos')"><span class="icon">🔬</span><span>Laboratorio</span></div>
-        <div class="nav-item" onclick="cambiarPestana('copy')"><span class="icon">🖨️</span><span>Impresoras</span></div>
-        <div class="nav-item" onclick="cambiarPestana('electronicos')"><span class="icon">🔌</span><span>Electrónicos</span></div>
+        <div class="nav-item" onclick="cambiarPestana('dispositivos')"><span class="icon">🔬</span><span>Lab</span></div>
+        <div class="nav-item" onclick="cambiarPestana('impresoras')"><span class="icon">🖨️</span><span>Impresoras</span></div>
+        <div class="nav-item" onclick="cambiarPestana('electronicos')"><span class="icon">🔌</span><span>Taller</span></div>
         <div class="nav-item" onclick="cambiarPestana('semaforo')"><span class="icon">🚦</span><span>Semáforo</span></div>
     </div>
 </div>
@@ -219,7 +219,7 @@
     // =========================================================
     // 🔗 PEGA AQUÍ TU ENLACE DE APPS SCRIPT DE LA APP DE SERVICIOS
     // =========================================================
-    const apiURL = "https://script.google.com/macros/s/AKfycby7ezuc67woI3MNOsd4DNO3r51ntrrhZhD2Z7daW_RjIhtpsdSNHvofDp54Ijpgpk7jgw/exec";
+    const apiURL = "https://script.google.com/macros/s/AKfycbySWEZLtq99Vw3G3DRtnAzfkiVlKFMUYcuJzqeMNbTA5jbCZ7Oc_cxk-PG9A6PTuBthNA/exec";
 
     function showToast(message, isError = false) {
         const toast = document.getElementById("toast");
@@ -311,36 +311,36 @@
         return horas.toString().padStart(2, '0') + ':' + minutos + ' ' + ampm;
     }
 
-    // LISTENER PARA LOS 6 MÓDULOS
+    // LISTENER PARA LOS 6 MÓDULOS (AHORA CON formImpresoras)
     document.getElementById('formReporte').addEventListener('submit', async (e) => { e.preventDefault(); showLoader(true); enviar("reporte", await procArchivos('fotoUploadR'), 'formReporte'); });
     document.getElementById('formAgenda').addEventListener('submit', (e) => { e.preventDefault(); showLoader(true); enviar("agenda", [], 'formAgenda'); });
     document.getElementById('formDispositivos').addEventListener('submit', async (e) => { e.preventDefault(); showLoader(true); enviar("dispositivos", await procArchivos('fotoUploadD'), 'formDispositivos'); });
-    document.getElementById('formCopy').addEventListener('submit', async (e) => { e.preventDefault(); showLoader(true); enviar("copy", await procArchivos('fotoUploadC'), 'formCopy'); });
+    document.getElementById('formImpresoras').addEventListener('submit', async (e) => { e.preventDefault(); showLoader(true); enviar("impresoras", await procArchivos('fotoUploadI'), 'formImpresoras'); });
     document.getElementById('formElectronicos').addEventListener('submit', (e) => { e.preventDefault(); showLoader(true); enviar("electronicos", [], 'formElectronicos'); });
     document.getElementById('formSemaforo').addEventListener('submit', (e) => { e.preventDefault(); showLoader(true); enviar("semaforo", [], 'formSemaforo'); });
 
-    // ✅ FUNCIÓN ENVIAR MAESTRA CON INYECCIÓN DE USUARIO Y HORA AM/PM
+    // ✅ FUNCIÓN ENVIAR MAESTRA
     function enviar(tipo, arr, formId) {
         let usuarioActual = localStorage.getItem("isdecomUser") || "DESCONOCIDO";
-        let d = { tipoFormulario: tipo, fotos: arr, tecnico: usuarioActual }; // Inyección global
+        let d = { tipoFormulario: tipo, fotos: arr, tecnico: usuarioActual }; 
         
         if (tipo==="reporte") { 
             d = {...d, tipoVisita: v('tipoVisitaR'), fecha: v('fechaR'), 
-                 horaInicio: formatearAMPM(v('horaInicioR')), // Conversión a AM/PM
-                 horaFinal: formatearAMPM(v('horaFinalR')),   // Conversión a AM/PM
+                 horaInicio: formatearAMPM(v('horaInicioR')), 
+                 horaFinal: formatearAMPM(v('horaFinalR')),   
                  cliente: v('clienteR'), sede: v('sedeR'), servicio: v('servicioR'), materiales: v('materialesR'), estado: v('estadoR')}; 
         }
         else if (tipo==="agenda") { 
             let agendarCal = document.getElementById('syncCalendarA').checked; 
             d = {...d, syncCalendar: agendarCal, fechaServicio: v('fechaA'), 
-                 horaServicio: formatearAMPM(v('horaA')),     // Conversión a AM/PM
+                 horaServicio: formatearAMPM(v('horaA')),     
                  cliente: v('clienteA'), tarea: v('tareaA'), asignado: v('asignadoA'), estado: "PENDIENTE", observaciones: v('observacionesA')}; 
         }
         else if (tipo==="dispositivos") { 
             d = {...d, fecha: v('fechaD'), cliente: v('clienteD'), telefono: v('telefonoD'), equipo: v('equipoD'), contrasena: v('contrasenaD'), actividad: v('actividadD'), estado: "PENDIENTE", observaciones: v('observacionesD')}; 
         }
-        else if (tipo==="copy") { 
-            d = {...d, fecha: v('fechaC'), cliente: v('clienteC'), actividad: v('actividadC'), tecnicoDeja: v('tecnicoDejaC'), estado: "PENDIENTE", observaciones: v('observacionesC')}; 
+        else if (tipo==="impresoras") { 
+            d = {...d, fecha: v('fechaI'), cliente: v('clienteI'), actividad: v('actividadI'), tecnicoDeja: v('tecnicoDejaI'), estado: "PENDIENTE", observaciones: v('observacionesI')}; 
         }
         else if (tipo==="electronicos") { 
             d = {...d, fecha: v('fechaE'), cliente: v('clienteE'), electronico: v('electronicoE'), actividad: v('actividadE'), estado: "PENDIENTE", observaciones: v('observacionesE')}; 
