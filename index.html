@@ -161,7 +161,7 @@
                     <div class="input-group"><label>FECHA *</label><input type="date" id="fechaI" required></div>
                     <div class="input-group"><label>CLIENTE *</label><input list="opcionesClientes" id="clienteI" class="inputClienteCompartido" required></div>
                     <div class="input-group"><label>ACTIVIDAD / REPORTE *</label><textarea id="actividadI" rows="3" required></textarea></div>
-                    <div class="input-group"><label>TÉCNICO QUE DEJA *</label><select id="tecnicoDejaI" required><option value="" disabled selected>SELECCIONE...</option><option>NINGUNO</option><option>JUAN CAMILO COY</option><option>ANDRES FELIPE HENAO</option><option>CAMILO HERRERA</option><option>FELIPE DE LOS RIOS</option><option>JUAN FELIPE LOPEZ</option><option>FRANCISCO SANCHEZ</option><option>ALEXANDER</option><option>MAURICIO</option><option>IMPRESORAS</option></select></div>
+                    <div class="input-group"><label>TÉCNICO QUE DEJA *</label><select id="tecnicoDejaI" required><option value="" disabled selected>SELECCIONE...</option><option>NINGUNO</option><option>JUAN CAMILO COY</option><option>ANDRES FELIPE HENAO</option><option>CAMILO HERRERA</option><option>FELIPE DE LOS RIOS</option><option>JUAN FELIPE LOPEZ</option><option>FRANCISCO SANCHEZ</option><option>IMPRESORAS</option></select></div>
                     <div class="input-group"><label>OBSERVACIONES</label><textarea id="observacionesI" rows="2"></textarea></div>
                     <div class="input-group"><label>📸 EVIDENCIAS (Opcional)</label><input type="file" id="fotoUploadI" accept="image/*, video/*" multiple></div>
                     <button type="submit" class="btn-primary">REGISTRAR IMPRESORA</button>
@@ -176,7 +176,7 @@
                     <div class="input-group"><label>FECHA *</label><input type="date" id="fechaE" required></div>
                     <div class="input-group"><label>CLIENTE *</label><input list="opcionesClientes" id="clienteE" class="inputClienteCompartido" required></div>
                     <div class="input-group"><label>DISPOSITIVO Y REPORTE *</label><textarea id="actividadE" rows="3" required></textarea></div>
-                    <div class="input-group"><label>ASIGNADO A *</label><select id="electronicoE" required><option value="" disabled selected>SELECCIONE...</option><option>NINGUNO</option><option>ALEXANDER RAMIREZ</option><option>LAPTECH</option></select></div>
+                    <div class="input-group"><label>ASIGNADO A *</label><select id="electronicoE" required><option value="" disabled selected>SELECCIONE...</option><option>NINGUNO</option><option>LAPTECH</option></select></div>
                     <div class="input-group"><label>OBSERVACIONES</label><textarea id="observacionesE" rows="2"></textarea></div>
                     <button type="submit" class="btn-primary">REGISTRAR DISPOSITIVO</button>
                 </form>
@@ -213,24 +213,6 @@
     </div>
 </div>
 
-    // ==========================================
-    // ✅ INTERCEPTOR GLOBAL: FORZAR MAYÚSCULAS EN TIEMPO REAL
-    // ==========================================
-    document.addEventListener('input', function (e) {
-        // Aplica a todos los campos de texto y áreas de texto, EXCEPTO a los campos de contraseña (PIN)
-        if ((e.target.tagName === 'INPUT' && e.target.type !== 'password' && e.target.type !== 'date' && e.target.type !== 'time') || e.target.tagName === 'TEXTAREA') {
-            // Guardamos la posición del cursor para que no salte al final al escribir
-            let start = e.target.selectionStart;
-            let end = e.target.selectionEnd;
-            
-            // Convertimos a mayúscula sostenida inmediatamente
-            e.target.value = e.target.value.toUpperCase();
-            
-            // Restauramos el cursor
-            e.target.setSelectionRange(start, end);
-        }
-    });
-    
 <script>
     const USUARIOS = { "JUAN CAMILO COY": "2905", "ANDRES FELIPE HENAO": "9666", "CAMILO HERRERA": "1053", "JUAN FELIPE LOPEZ": "5370", "FELIPE DE LOS RIOS": "1397", "FRANCISCO SANCHEZ": "1803", "ISDECOM": "5593" };
     
@@ -239,12 +221,30 @@
     // =========================================================
     const apiURL = "https://script.google.com/macros/s/AKfycbySWEZLtq99Vw3G3DRtnAzfkiVlKFMUYcuJzqeMNbTA5jbCZ7Oc_cxk-PG9A6PTuBthNA/exec";
 
+    // ==========================================
+    // ✅ INTERCEPTOR GLOBAL: FORZAR MAYÚSCULAS EN TIEMPO REAL
+    // ==========================================
+    document.addEventListener('input', function (e) {
+        if ((e.target.tagName === 'INPUT' && e.target.type !== 'password' && e.target.type !== 'date' && e.target.type !== 'time') || e.target.tagName === 'TEXTAREA') {
+            let start = e.target.selectionStart;
+            let end = e.target.selectionEnd;
+            e.target.value = e.target.value.toUpperCase();
+            e.target.setSelectionRange(start, end);
+        }
+    });
+
+    // ==========================================
+    // UI Y NAVEGACIÓN
+    // ==========================================
     function showToast(message, isError = false) {
         const toast = document.getElementById("toast");
         toast.innerText = message; toast.style.backgroundColor = isError ? "var(--danger)" : "var(--success)";
         toast.classList.add("show"); setTimeout(() => { toast.classList.remove("show"); }, 3500);
     }
-    function showLoader(show) { document.getElementById("loaderOverlay").style.display = show ? "flex" : "none"; }
+    
+    function showLoader(show) { 
+        document.getElementById("loaderOverlay").style.display = show ? "flex" : "none"; 
+    }
 
     function cambiarPestana(seccion) {
         document.querySelectorAll('.nav-item').forEach(t => t.classList.remove('activa'));
@@ -254,8 +254,17 @@
         if(document.getElementById(seccionId)) { document.getElementById(seccionId).classList.add('activa'); window.scrollTo(0,0); }
     }
 
+    // ==========================================
+    // SESIÓN Y SEGURIDAD
+    // ==========================================
     let tInactividad; const T_LIMITE = 3 * 60 * 1000;
-    function cerrar() { localStorage.removeItem("isdecom"); localStorage.removeItem("isdecomUser"); document.getElementById("appScreen").style.display = "none"; document.getElementById("loginScreen").style.display = "flex"; document.getElementById("pinInput").value = ""; document.getElementById("userInput").value = ""; window.scrollTo(0,0); }
+    
+    function cerrar() { 
+        localStorage.removeItem("isdecom"); localStorage.removeItem("isdecomUser"); 
+        document.getElementById("appScreen").style.display = "none"; document.getElementById("loginScreen").style.display = "flex"; 
+        document.getElementById("pinInput").value = ""; document.getElementById("userInput").value = ""; window.scrollTo(0,0); 
+    }
+    
     function reiniciarT() { clearTimeout(tInactividad); if(localStorage.getItem("isdecom")==="ok") tInactividad = setTimeout(cerrar, T_LIMITE); }
     window.onload=reiniciarT; document.onmousemove=reiniciarT; document.onkeypress=reiniciarT; document.ontouchstart=reiniciarT; document.onclick=reiniciarT;
     
@@ -263,8 +272,9 @@
     
     document.getElementById("btnDesbloquear").addEventListener("click", () => { 
         let user = document.getElementById("userInput").value; let pass = document.getElementById("pinInput").value;
-        if(user && USUARIOS[user] && USUARIOS[user] === pass) { localStorage.setItem("isdecom","ok"); localStorage.setItem("isdecomUser", user); iniciarApp(); } 
-        else { document.getElementById("errorPin").style.display="block"; document.getElementById("pinInput").value=""; }
+        if(user && USUARIOS[user] && USUARIOS[user] === pass) { 
+            localStorage.setItem("isdecom","ok"); localStorage.setItem("isdecomUser", user); iniciarApp(); 
+        } else { document.getElementById("errorPin").style.display="block"; document.getElementById("pinInput").value=""; }
     });
     
     document.getElementById("btnSalir").addEventListener("click", cerrar);
@@ -276,11 +286,15 @@
         cargarClientes(); reiniciarT(); 
     }
 
+    // ==========================================
+    // CONEXIÓN CON APPS SCRIPT (CEREBRO)
+    // ==========================================
     function cargarClientes() {
-        if(apiURL === "PEGAR_AQUI_TU_ENLACE_DE_APPS_SCRIPT_DE_REPORTES") return;
+        if(apiURL === "https://script.google.com/macros/s/AKfycbySWEZLtq99Vw3G3DRtnAzfkiVlKFMUYcuJzqeMNbTA5jbCZ7Oc_cxk-PG9A6PTuBthNA/exec") return;
         const i = document.querySelectorAll('.inputClienteCompartido'); i.forEach(inp => inp.placeholder = "⏳ CONECTANDO...");
         var s = document.createElement('script'); s.src = apiURL + (apiURL.includes('?')?'&':'?') + "callback=procesarClientes"; document.body.appendChild(s);
     }
+    
     function procesarClientes(d) {
         const i = document.querySelectorAll('.inputClienteCompartido'); const l = document.getElementById('opcionesClientes'); l.innerHTML = ''; 
         if(d && d.length>0){ d.forEach(c => { let o = document.createElement('option'); o.value=c; l.appendChild(o); }); i.forEach(inp => inp.placeholder = "✅ " + d.length + " LISTOS.");
@@ -329,7 +343,9 @@
         return horas.toString().padStart(2, '0') + ':' + minutos + ' ' + ampm;
     }
 
-    // LISTENER PARA LOS 6 MÓDULOS (AHORA CON formImpresoras)
+    // ==========================================
+    // LISTENERS DE ENVÍO DE FORMULARIOS
+    // ==========================================
     document.getElementById('formReporte').addEventListener('submit', async (e) => { e.preventDefault(); showLoader(true); enviar("reporte", await procArchivos('fotoUploadR'), 'formReporte'); });
     document.getElementById('formAgenda').addEventListener('submit', (e) => { e.preventDefault(); showLoader(true); enviar("agenda", [], 'formAgenda'); });
     document.getElementById('formDispositivos').addEventListener('submit', async (e) => { e.preventDefault(); showLoader(true); enviar("dispositivos", await procArchivos('fotoUploadD'), 'formDispositivos'); });
@@ -337,7 +353,9 @@
     document.getElementById('formElectronicos').addEventListener('submit', (e) => { e.preventDefault(); showLoader(true); enviar("electronicos", [], 'formElectronicos'); });
     document.getElementById('formSemaforo').addEventListener('submit', (e) => { e.preventDefault(); showLoader(true); enviar("semaforo", [], 'formSemaforo'); });
 
-    // ✅ FUNCIÓN ENVIAR MAESTRA
+    // ==========================================
+    // ENRUTAMIENTO AL BACKEND
+    // ==========================================
     function enviar(tipo, arr, formId) {
         let usuarioActual = localStorage.getItem("isdecomUser") || "DESCONOCIDO";
         let d = { tipoFormulario: tipo, fotos: arr, tecnico: usuarioActual }; 
