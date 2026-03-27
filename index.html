@@ -219,7 +219,7 @@
     const USUARIOS = { "JUAN CAMILO COY": "2905", "ANDRES FELIPE HENAO": "9666", "CAMILO HERRERA": "1053", "JUAN FELIPE LOPEZ": "5370", "FELIPE DE LOS RIOS": "1397", "FRANCISCO SANCHEZ": "1803", "ELIANA": "5593" };
     
     // =========================================================
-    // ENLACE A TU BASE DE DATOS
+    // ENLACE DIRECTO A TU APLICACIÓN WEB DE GOOGLE
     // =========================================================
     const apiURL = "https://script.google.com/macros/s/AKfycbzQah9uIwHWAPityBTuPbCmJFljN_ddCs-F8ig9Q8YsczyNQ67RVc2sQOWOGkQnkbc6Og/exec";
 
@@ -286,15 +286,10 @@
     }
 
     // ==========================================
-    // 🔗 MOTOR DE RASTREO EXTREMO (DIAGNÓSTICO)
+    // 🔗 MOTOR DE RASTREO EXTREMO (DIAGNÓSTICO CORREGIDO)
     // ==========================================
     function cargarClientes() {
         alert("PASO 1: Iniciando conexión...");
-        
-        if(apiURL.includes("PEGAR_AQUI")) {
-            alert("ERROR: Aún dice PEGAR_AQUI en la URL.");
-            return; 
-        }
         
         const inputs = document.querySelectorAll('.inputClienteCompartido');
         inputs.forEach(inp => inp.placeholder = "⏳ CONECTANDO...");
