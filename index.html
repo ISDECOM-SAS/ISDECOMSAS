@@ -133,7 +133,7 @@
                         <div class="input-group"><label>FECHA (Programada) *</label><input type="date" id="fechaA" required></div>
                         <div class="input-group"><label>HORA (Opcional)</label><input type="time" id="horaA"></div>
                     </div>
-                    <div class="input-group"><label>ASIGNAR A *</label><select id="asignadoA" required><option value="" disabled selected>Seleccione...</option><option>JUAN CAMILO COY</option><option>ANDRES FELIPE HENAO</option><option>CAMILO HERRERA</option><option>JUAN FELIPE LOPEZ</option><option>FELIPE DE LOS RIOS</option><option>FRANCISCO SANCHEZ</option><option>ISDECOM</option></select></div>
+                    <div class="input-group"><label>ASIGNAR A *</label><select id="asignadoA" required><option value="" disabled selected>Seleccione...</option><option>JUAN CAMILO COY</option><option>ANDRES FELIPE HENAO</option><option>CAMILO HERRERA</option><option>JUAN FELIPE LOPEZ</option><option>FELIPE DE LOS RIOS</option><option>FRANCISCO SANCHEZ</option><option>ELIANA</option></select></div>
                     <div class="input-group"><label>OBSERVACIONES</label><textarea id="observacionesA" rows="2"></textarea></div>
                     <button type="submit" class="btn-primary">AGENDAR SERVICIO</button>
                 </form>
@@ -219,9 +219,10 @@
     const USUARIOS = { "JUAN CAMILO COY": "2905", "ANDRES FELIPE HENAO": "9666", "CAMILO HERRERA": "1053", "JUAN FELIPE LOPEZ": "5370", "FELIPE DE LOS RIOS": "1397", "FRANCISCO SANCHEZ": "1803", "ELIANA": "5593" };
     
     // =========================================================
-    // PEGA AQUÍ TU ENLACE DE APPS SCRIPT
+    // ⚠️ PEGA AQUÍ LA NUEVA URL QUE GENERASTE HOY ⚠️
+    // Si la anterior funcionaba, déjala. Si generaste una nueva, cámbiala.
     // =========================================================
-    const apiURL = "https://script.google.com/macros/s/AKfycbyXXuJ-ftSIOVSXCyENiIM6CuGZt1dvZNpaRM_2s0pycMqX-x6WDy6_P6aTEkfcZODG9g/exec";
+    const apiURL = "https://script.google.com/macros/s/AKfycbzQah9uIwHWAPityBTuPbCmJFljN_ddCs-F8ig9Q8YsczyNQ67RVc2sQOWOGkQnkbc6Og/exec";
 
     // ==========================================
     // INTERCEPTOR GLOBAL: FORZAR MAYÚSCULAS
@@ -286,38 +287,44 @@
     }
 
     // ==========================================
-    // CONEXIÓN BLINDADA JSONP
+    // 🔗 MOTOR DE DESCARGA (CON DIAGNÓSTICO FETCH)
     // ==========================================
     function cargarClientes() {
-        if(apiURL.includes("https://script.google.com/macros/s/AKfycbyXXuJ-ftSIOVSXCyENiIM6CuGZt1dvZNpaRM_2s0pycMqX-x6WDy6_P6aTEkfcZODG9g/exec")) return; 
+        if(apiURL.includes("https://script.google.com/macros/s/AKfycbzQah9uIwHWAPityBTuPbCmJFljN_ddCs-F8ig9Q8YsczyNQ67RVc2sQOWOGkQnkbc6Og/exec")) return; 
         
         const inputs = document.querySelectorAll('.inputClienteCompartido');
         inputs.forEach(inp => inp.placeholder = "⏳ CONECTANDO...");
         
-        let urlSegura = apiURL + (apiURL.includes('?') ? '&' : '?') + "callback=procesarClientes";
-        
-        var script = document.createElement('script');
-        script.src = urlSegura;
-        script.onerror = function() {
-            inputs.forEach(inp => inp.placeholder = "❌ ERROR AL DESCARGAR");
-        };
-        document.body.appendChild(script);
-    }
-    
-    function procesarClientes(d) {
-        const inputs = document.querySelectorAll('.inputClienteCompartido');
-        const lista = document.getElementById('opcionesClientes');
-        lista.innerHTML = ''; 
-        if(d && d.length > 0){ 
-            d.forEach(c => { 
-                let o = document.createElement('option'); 
-                o.value = c; 
-                lista.appendChild(o); 
-            }); 
-            inputs.forEach(inp => inp.placeholder = "✅ " + d.length + " LISTOS");
-        } else {
-            inputs.forEach(inp => inp.placeholder = "⚠️ SIN CLIENTES");
-        }
+        fetch(apiURL)
+        .then(response => {
+            if (!response.ok) throw new Error("Error HTTP " + response.status);
+            return response.json();
+        })
+        .then(datos => {
+            // Si el Cerebro reporta un error de Excel
+            if (datos.error_servidor) {
+                alert("ERROR EN EXCEL: " + datos.error_servidor);
+                inputs.forEach(inp => inp.placeholder = "❌ ERROR EXCEL");
+                return;
+            }
+
+            // Llenar la lista
+            const lista = document.getElementById('opcionesClientes');
+            lista.innerHTML = ''; 
+            if(datos && datos.length > 0){ 
+                datos.forEach(c => { 
+                    let o = document.createElement('option'); o.value = c; lista.appendChild(o); 
+                }); 
+                inputs.forEach(inp => inp.placeholder = "✅ " + datos.length + " LISTOS");
+            } else {
+                inputs.forEach(inp => inp.placeholder = "⚠️ SIN CLIENTES");
+            }
+        })
+        .catch(error => {
+            // Si el navegador bloquea la conexión, imprimimos el error en la pantalla
+            inputs.forEach(inp => inp.placeholder = "❌ BLOQUEADO");
+            alert("MOTIVO DEL BLOQUEO: " + error.message);
+        });
     }
 
     // ==========================================
