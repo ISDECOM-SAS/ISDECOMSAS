@@ -102,7 +102,7 @@
                         <div class="input-group"><label>HORA INICIO *</label><input type="time" id="horaInicioR" required></div>
                         <div class="input-group"><label>HORA FINAL *</label><input type="time" id="horaFinalR" required></div>
                     </div>
-                    <div class="input-group"><label>CLIENTE *</label><input list="opcionesClientes" id="clienteR" class="inputClienteCompartido" placeholder="⏳ CONECTANDO..." required></div>
+                    <div class="input-group"><label>CLIENTE *</label><input list="opcionesClientes" id="clienteR" class="inputClienteCompartido" placeholder="⏳ CARGANDO..." required></div>
                     <div class="input-group"><label>SEDE (Opcional)</label><input type="text" id="sedeR"></div>
                     <div class="input-group"><label>TIPO DE VISITA *</label>
                         <select id="tipoVisitaR" required><option value="" disabled selected>Seleccione...</option><option>MANTENIMIENTO</option><option>REPARACIÓN</option><option>INSTALACIÓN</option><option>PROYECTO</option><option>COTIZACIÓN</option><option>REVISIÓN</option><option>OTRO</option></select>
@@ -126,7 +126,7 @@
             <div class="card">
                 <h2 class="card-title">📅 NUEVA CITA</h2>
                 <form id="formAgenda">
-                    <div class="input-group"><label>CLIENTE *</label><input list="opcionesClientes" id="clienteA" class="inputClienteCompartido" placeholder="⏳ CONECTANDO..." required></div>
+                    <div class="input-group"><label>CLIENTE *</label><input list="opcionesClientes" id="clienteA" class="inputClienteCompartido" placeholder="⏳ CARGANDO..." required></div>
                     <label class="checkbox-container"><input type="checkbox" id="syncCalendarA" style="width: auto;"> Sincronizar en Google Calendar</label>
                     <div class="input-group" style="margin-top: 15px;"><label>TAREA A REALIZAR *</label><textarea id="tareaA" rows="3" required></textarea></div>
                     <div class="grid-2">
@@ -144,7 +144,7 @@
             <div class="card">
                 <h2 class="card-title">🔬 INGRESO A LABORATORIO</h2>
                 <form id="formDispositivos">
-                    <div class="input-group"><label>CLIENTE *</label><input list="opcionesClientes" id="clienteD" class="inputClienteCompartido" placeholder="⏳ CONECTANDO..." required></div>
+                    <div class="input-group"><label>CLIENTE *</label><input list="opcionesClientes" id="clienteD" class="inputClienteCompartido" placeholder="⏳ CARGANDO..." required></div>
                     <div class="grid-2">
                         <div class="input-group"><label>TELÉFONO *</label><input type="tel" id="telefonoD" required></div>
                         <div class="input-group"><label>CONTRASEÑA *</label><input type="text" id="contrasenaD" required></div>
@@ -162,7 +162,7 @@
             <div class="card">
                 <h2 class="card-title">🖨️ MÓDULO IMPRESORAS</h2>
                 <form id="formImpresoras">
-                    <div class="input-group"><label>CLIENTE *</label><input list="opcionesClientes" id="clienteI" class="inputClienteCompartido" placeholder="⏳ CONECTANDO..." required></div>
+                    <div class="input-group"><label>CLIENTE *</label><input list="opcionesClientes" id="clienteI" class="inputClienteCompartido" placeholder="⏳ CARGANDO..." required></div>
                     <div class="input-group"><label>ACTIVIDAD / REPORTE *</label><textarea id="actividadI" rows="3" required></textarea></div>
                     <div class="input-group"><label>TÉCNICO QUE DEJA *</label><select id="tecnicoDejaI" required><option value="" disabled selected>SELECCIONE...</option><option>NINGUNO</option><option>JUAN CAMILO COY</option><option>ANDRES FELIPE HENAO</option><option>CAMILO HERRERA</option><option>FELIPE DE LOS RIOS</option><option>JUAN FELIPE LOPEZ</option><option>FRANCISCO SANCHEZ</option><option>ALEXANDER</option><option>COPY</option></select></div>
                     <div class="input-group"><label>OBSERVACIONES</label><textarea id="observacionesI" rows="2"></textarea></div>
@@ -176,7 +176,7 @@
             <div class="card">
                 <h2 class="card-title">🔌 TALLER ELECTRÓNICOS</h2>
                 <form id="formElectronicos">
-                    <div class="input-group"><label>CLIENTE *</label><input list="opcionesClientes" id="clienteE" class="inputClienteCompartido" placeholder="⏳ CONECTANDO..." required></div>
+                    <div class="input-group"><label>CLIENTE *</label><input list="opcionesClientes" id="clienteE" class="inputClienteCompartido" placeholder="⏳ CARGANDO..." required></div>
                     <div class="input-group"><label>DISPOSITIVO Y REPORTE *</label><textarea id="actividadE" rows="3" required></textarea></div>
                     <div class="input-group"><label>ASIGNADO A *</label><select id="electronicoE" required><option value="" disabled selected>SELECCIONE...</option><option>NINGUNO</option><option>LAPTECH</option></select></div>
                     <div class="input-group"><label>OBSERVACIONES</label><textarea id="observacionesE" rows="2"></textarea></div>
@@ -190,7 +190,7 @@
             <div class="card">
                 <h2 class="card-title">🚦 SEMÁFORO DE TAREAS</h2>
                 <form id="formSemaforo">
-                    <div class="input-group"><label>CLIENTE *</label><input list="opcionesClientes" id="clienteS" class="inputClienteCompartido" placeholder="⏳ CONECTANDO..." required></div>
+                    <div class="input-group"><label>CLIENTE *</label><input list="opcionesClientes" id="clienteS" class="inputClienteCompartido" placeholder="⏳ CARGANDO..." required></div>
                     <div class="input-group"><label>ACTIVIDAD A REALIZAR *</label><textarea id="actividadS" rows="3" required></textarea></div>
                     <div class="grid-2">
                         <div class="input-group"><label>ASIGNADO POR *</label><select id="asignadoPorS" required><option value="" disabled selected>Seleccione...</option><option>FELIPE DE LOS RIOS</option><option>JUAN FELIPE LOPEZ</option></select></div>
@@ -218,14 +218,11 @@
 <script>
     const USUARIOS = { "JUAN CAMILO COY": "2905", "ANDRES FELIPE HENAO": "9666", "CAMILO HERRERA": "1053", "JUAN FELIPE LOPEZ": "5370", "FELIPE DE LOS RIOS": "1397", "FRANCISCO SANCHEZ": "1803", "ELIANA": "5593" };
     
-    // =========================================================
-    // ENLACE DIRECTO A TU APLICACIÓN WEB DE GOOGLE
-    // =========================================================
+    // ==========================================
+    // 🔗 URL DE TU API DE GOOGLE
+    // ==========================================
     const apiURL = "https://script.google.com/macros/s/AKfycbzQah9uIwHWAPityBTuPbCmJFljN_ddCs-F8ig9Q8YsczyNQ67RVc2sQOWOGkQnkbc6Og/exec";
 
-    // ==========================================
-    // INTERCEPTOR GLOBAL: FORZAR MAYÚSCULAS
-    // ==========================================
     document.addEventListener('input', function (e) {
         if ((e.target.tagName === 'INPUT' && e.target.type !== 'password' && e.target.type !== 'date' && e.target.type !== 'time') || e.target.tagName === 'TEXTAREA') {
             let start = e.target.selectionStart;
@@ -241,9 +238,7 @@
         toast.classList.add("show"); setTimeout(() => { toast.classList.remove("show"); }, 3500);
     }
     
-    function showLoader(show) { 
-        document.getElementById("loaderOverlay").style.display = show ? "flex" : "none"; 
-    }
+    function showLoader(show) { document.getElementById("loaderOverlay").style.display = show ? "flex" : "none"; }
 
     function cambiarPestana(seccion) {
         document.querySelectorAll('.nav-item').forEach(t => t.classList.remove('activa'));
@@ -253,27 +248,16 @@
         if(document.getElementById(seccionId)) { document.getElementById(seccionId).classList.add('activa'); window.scrollTo(0,0); }
     }
 
-    // ==========================================
-    // SESIÓN Y SEGURIDAD
-    // ==========================================
     let tInactividad; const T_LIMITE = 3 * 60 * 1000;
-    
-    function cerrar() { 
-        localStorage.removeItem("isdecom"); localStorage.removeItem("isdecomUser"); 
-        document.getElementById("appScreen").style.display = "none"; document.getElementById("loginScreen").style.display = "flex"; 
-        document.getElementById("pinInput").value = ""; document.getElementById("userInput").value = ""; window.scrollTo(0,0); 
-    }
-    
+    function cerrar() { localStorage.removeItem("isdecom"); localStorage.removeItem("isdecomUser"); document.getElementById("appScreen").style.display = "none"; document.getElementById("loginScreen").style.display = "flex"; document.getElementById("pinInput").value = ""; document.getElementById("userInput").value = ""; window.scrollTo(0,0); }
     function reiniciarT() { clearTimeout(tInactividad); if(localStorage.getItem("isdecom")==="ok") tInactividad = setTimeout(cerrar, T_LIMITE); }
     window.onload=reiniciarT; document.onmousemove=reiniciarT; document.onkeypress=reiniciarT; document.ontouchstart=reiniciarT; document.onclick=reiniciarT;
-    
     document.addEventListener("DOMContentLoaded", () => { if(localStorage.getItem("isdecom")==="ok") iniciarApp(); });
     
     document.getElementById("btnDesbloquear").addEventListener("click", () => { 
         let user = document.getElementById("userInput").value; let pass = document.getElementById("pinInput").value;
-        if(user && USUARIOS[user] && USUARIOS[user] === pass) { 
-            localStorage.setItem("isdecom","ok"); localStorage.setItem("isdecomUser", user); iniciarApp(); 
-        } else { document.getElementById("errorPin").style.display="block"; document.getElementById("pinInput").value=""; }
+        if(user && USUARIOS[user] && USUARIOS[user] === pass) { localStorage.setItem("isdecom","ok"); localStorage.setItem("isdecomUser", user); iniciarApp(); } 
+        else { document.getElementById("errorPin").style.display="block"; document.getElementById("pinInput").value=""; }
     });
     
     document.getElementById("btnSalir").addEventListener("click", cerrar);
@@ -286,52 +270,23 @@
     }
 
     // ==========================================
-    // 🔗 MOTOR DE RASTREO EXTREMO (DIAGNÓSTICO CORREGIDO)
+    // 🔗 MOTOR DE CARGA FINAL (LIMPIO)
     // ==========================================
     function cargarClientes() {
-        alert("PASO 1: Iniciando conexión...");
-        
         const inputs = document.querySelectorAll('.inputClienteCompartido');
-        inputs.forEach(inp => inp.placeholder = "⏳ CONECTANDO...");
-        
-        alert("PASO 2: La URL configurada empieza con: " + apiURL.substring(0, 40) + "...");
-        
-        fetch(apiURL, { redirect: "follow" })
-        .then(response => {
-            alert("PASO 3: Google respondió con status: " + response.status);
-            if (!response.ok) throw new Error("Error HTTP " + response.status);
-            return response.json();
-        })
+        fetch(apiURL)
+        .then(response => response.json())
         .then(datos => {
-            alert("PASO 4: Datos recibidos perfectamente.");
-            
-            if (datos.error_servidor) {
-                alert("ERROR INTERNO DE EXCEL: " + datos.error_servidor);
-                inputs.forEach(inp => inp.placeholder = "❌ ERROR EXCEL");
-                return;
-            }
-
             const lista = document.getElementById('opcionesClientes');
             lista.innerHTML = ''; 
             if(datos && datos.length > 0){ 
-                datos.forEach(c => { 
-                    let o = document.createElement('option'); o.value = c; lista.appendChild(o); 
-                }); 
-                inputs.forEach(inp => inp.placeholder = "✅ " + datos.length + " LISTOS");
-                alert("PASO 5: ¡ÉXITO! Clientes inyectados en la lista.");
-            } else {
-                inputs.forEach(inp => inp.placeholder = "⚠️ SIN CLIENTES");
+                datos.forEach(c => { let o = document.createElement('option'); o.value = c; lista.appendChild(o); }); 
+                inputs.forEach(inp => inp.placeholder = "✅ " + datos.length + " CLIENTES OK");
             }
         })
-        .catch(error => {
-            alert("PASO X (Fallo): El celular bloqueó la conexión. Motivo: " + error.message);
-            inputs.forEach(inp => inp.placeholder = "❌ BLOQUEADO");
-        });
+        .catch(error => { inputs.forEach(inp => inp.placeholder = "❌ SIN CONEXIÓN"); });
     }
 
-    // ==========================================
-    // PROCESAMIENTO DE IMÁGENES
-    // ==========================================
     function procesarArchivo(file) {
         return new Promise((res) => {
             const r = new FileReader(); r.readAsDataURL(file);
@@ -355,7 +310,7 @@
         if(f.length>0){ 
             let p=[]; 
             for(let i=0; i<f.length; i++) {
-                if(f[i].type.startsWith('video/') && f[i].size > 15728640) { showToast("⚠️ EL VIDEO '" + f[i].name + "' PESA MÁS DE 15MB.", true); continue; }
+                if(f[i].type.startsWith('video/') && f[i].size > 15728640) { showToast("⚠️ EL VIDEO PESA MÁS DE 15MB.", true); continue; }
                 p.push(procesarArchivo(f[i])); 
             }
             arr = await Promise.all(p); 
@@ -373,9 +328,6 @@
         return horas.toString().padStart(2, '0') + ':' + minutos + ' ' + ampm;
     }
 
-    // ==========================================
-    // LISTENERS DE ENVÍO DE FORMULARIOS
-    // ==========================================
     document.getElementById('formReporte').addEventListener('submit', async (e) => { e.preventDefault(); showLoader(true); enviar("reporte", await procArchivos('fotoUploadR'), 'formReporte'); });
     document.getElementById('formAgenda').addEventListener('submit', (e) => { e.preventDefault(); showLoader(true); enviar("agenda", [], 'formAgenda'); });
     document.getElementById('formDispositivos').addEventListener('submit', async (e) => { e.preventDefault(); showLoader(true); enviar("dispositivos", await procArchivos('fotoUploadD'), 'formDispositivos'); });
@@ -383,37 +335,15 @@
     document.getElementById('formElectronicos').addEventListener('submit', async (e) => { e.preventDefault(); showLoader(true); enviar("electronicos", await procArchivos('fotoUploadE'), 'formElectronicos'); });
     document.getElementById('formSemaforo').addEventListener('submit', (e) => { e.preventDefault(); showLoader(true); enviar("semaforo", [], 'formSemaforo'); });
 
-    // ==========================================
-    // ENRUTAMIENTO AL BACKEND
-    // ==========================================
     function enviar(tipo, arr, formId) {
         let usuarioActual = localStorage.getItem("isdecomUser") || "DESCONOCIDO";
         let d = { tipoFormulario: tipo, fotos: arr, tecnico: usuarioActual }; 
-        
-        if (tipo==="reporte") { 
-            d = {...d, tipoVisita: v('tipoVisitaR'), 
-                 horaInicio: formatearAMPM(v('horaInicioR')), 
-                 horaFinal: formatearAMPM(v('horaFinalR')),   
-                 cliente: v('clienteR'), sede: v('sedeR'), servicio: v('servicioR'), materiales: v('materialesR'), estado: v('estadoR')}; 
-        }
-        else if (tipo==="agenda") { 
-            let agendarCal = document.getElementById('syncCalendarA').checked; 
-            d = {...d, syncCalendar: agendarCal, fechaServicio: v('fechaA'), 
-                 horaServicio: formatearAMPM(v('horaA')),     
-                 cliente: v('clienteA'), tarea: v('tareaA'), asignado: v('asignadoA'), observaciones: v('observacionesA')}; 
-        }
-        else if (tipo==="dispositivos") { 
-            d = {...d, cliente: v('clienteD'), telefono: v('telefonoD'), equipo: v('equipoD'), contrasena: v('contrasenaD'), actividad: v('actividadD'), observaciones: v('observacionesD')}; 
-        }
-        else if (tipo==="impresoras") { 
-            d = {...d, cliente: v('clienteI'), actividad: v('actividadI'), tecnicoDeja: v('tecnicoDejaI'), observaciones: v('observacionesI')}; 
-        }
-        else if (tipo==="electronicos") { 
-            d = {...d, cliente: v('clienteE'), electronico: v('electronicoE'), actividad: v('actividadE'), observaciones: v('observacionesE')}; 
-        }
-        else if (tipo==="semaforo") { 
-            d = {...d, cliente: v('clienteS'), actividad: v('actividadS'), asignadoPor: v('asignadoPorS'), revisadoPor: v('revisadoPorS'), tipoCliente: v('tipoClienteS'), observaciones: v('observacionesS')}; 
-        }
+        if (tipo==="reporte") { d = {...d, tipoVisita: v('tipoVisitaR'), horaInicio: formatearAMPM(v('horaInicioR')), horaFinal: formatearAMPM(v('horaFinalR')), cliente: v('clienteR'), sede: v('sedeR'), servicio: v('servicioR'), materiales: v('materialesR'), estado: v('estadoR')}; }
+        else if (tipo==="agenda") { let agendarCal = document.getElementById('syncCalendarA').checked; d = {...d, syncCalendar: agendarCal, fechaServicio: v('fechaA'), horaServicio: formatearAMPM(v('horaA')), cliente: v('clienteA'), tarea: v('tareaA'), asignado: v('asignadoA'), observaciones: v('observacionesA')}; }
+        else if (tipo==="dispositivos") { d = {...d, cliente: v('clienteD'), telefono: v('telefonoD'), equipo: v('equipoD'), contrasena: v('contrasenaD'), actividad: v('actividadD'), observaciones: v('observacionesD')}; }
+        else if (tipo==="impresoras") { d = {...d, cliente: v('clienteI'), actividad: v('actividadI'), tecnicoDeja: v('tecnicoDejaI'), observaciones: v('observacionesI')}; }
+        else if (tipo==="electronicos") { d = {...d, cliente: v('clienteE'), electronico: v('electronicoE'), actividad: v('actividadE'), observaciones: v('observacionesE')}; }
+        else if (tipo==="semaforo") { d = {...d, cliente: v('clienteS'), actividad: v('actividadS'), asignadoPor: v('asignadoPorS'), revisadoPor: v('revisadoPorS'), tipoCliente: v('tipoClienteS'), observaciones: v('observacionesS')}; }
 
         fetch(apiURL, { method: 'POST', headers: {'Content-Type': 'text/plain'}, body: JSON.stringify(d) })
         .then(r => r.json()).then(res => {
@@ -423,17 +353,10 @@
             }
             showLoader(false);
             if (tipo==='dispositivos') showToast("✅ TICKET CREADO: " + res.idGenerado); 
-            else showToast("✅ DATOS GUARDADOS CON ÉXITO.");
-            
-            document.getElementById(formId).reset(); 
-            window.scrollTo(0, 0); 
-            cargarClientes();
-        }).catch(() => { 
-            showLoader(false); 
-            showToast("❌ ERROR AL CONECTAR AL SERVIDOR.", true); 
-        });
+            else showToast("✅ DATOS GUARDADOS.");
+            document.getElementById(formId).reset(); window.scrollTo(0, 0); cargarClientes();
+        }).catch(() => { showLoader(false); showToast("❌ ERROR AL GUARDAR.", true); });
     }
-    
     function v(id) { return document.getElementById(id) ? document.getElementById(id).value : ""; }
 </script>
 </body>
