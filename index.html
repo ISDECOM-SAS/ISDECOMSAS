@@ -73,7 +73,7 @@
                 <option value="JUAN FELIPE LOPEZ">JUAN FELIPE LOPEZ</option>
                 <option value="FELIPE DE LOS RIOS">FELIPE DE LOS RIOS</option>
                 <option value="FRANCISCO SANCHEZ">FRANCISCO SANCHEZ</option>
-                <option value="ISDECOM">ELIANA</option>
+                <option value="ELIANA">ELIANA</option>
             </select>
         </div>
         <div class="input-group">
@@ -133,7 +133,7 @@
                         <div class="input-group"><label>FECHA (Programada) *</label><input type="date" id="fechaA" required></div>
                         <div class="input-group"><label>HORA (Opcional)</label><input type="time" id="horaA"></div>
                     </div>
-                    <div class="input-group"><label>ASIGNAR A *</label><select id="asignadoA" required><option value="" disabled selected>Seleccione...</option><option>JUAN CAMILO COY</option><option>ANDRES FELIPE HENAO</option><option>CAMILO HERRERA</option><option>JUAN FELIPE LOPEZ</option><option>FELIPE DE LOS RIOS</option><option>FRANCISCO SANCHEZ</option><option>ISDECOM</option></select></div>
+                    <div class="input-group"><label>ASIGNAR A *</label><select id="asignadoA" required><option value="" disabled selected>Seleccione...</option><option>JUAN CAMILO COY</option><option>ANDRES FELIPE HENAO</option><option>CAMILO HERRERA</option><option>JUAN FELIPE LOPEZ</option><option>FELIPE DE LOS RIOS</option><option>FRANCISCO SANCHEZ</option><option>ELIANA</option></select></div>
                     <div class="input-group"><label>OBSERVACIONES</label><textarea id="observacionesA" rows="2"></textarea></div>
                     <button type="submit" class="btn-primary">AGENDAR SERVICIO</button>
                 </form>
@@ -216,15 +216,16 @@
 </div>
 
 <script>
-    const USUARIOS = { "JUAN CAMILO COY": "2905", "ANDRES FELIPE HENAO": "9666", "CAMILO HERRERA": "1053", "JUAN FELIPE LOPEZ": "5370", "FELIPE DE LOS RIOS": "1397", "FRANCISCO SANCHEZ": "1803", ELIANA": "5593" };
+    // CAMBIO DE ISDECOM A ELIANA
+    const USUARIOS = { "JUAN CAMILO COY": "2905", "ANDRES FELIPE HENAO": "9666", "CAMILO HERRERA": "1053", "JUAN FELIPE LOPEZ": "5370", "FELIPE DE LOS RIOS": "1397", "FRANCISCO SANCHEZ": "1803", "ELIANA": "5593" };
     
     // =========================================================
-    // 🔗 PEGA AQUÍ TU ENLACE DE APPS SCRIPT
+    // 🔗 PEGA AQUÍ TU ENLACE DE APPS SCRIPT DE LA APP DE SERVICIOS
     // =========================================================
     const apiURL = "https://script.google.com/macros/s/AKfycbySWEZLtq99Vw3G3DRtnAzfkiVlKFMUYcuJzqeMNbTA5jbCZ7Oc_cxk-PG9A6PTuBthNA/exec";
 
     // ==========================================
-    // ✅ INTERCEPTOR GLOBAL: FORZAR MAYÚSCULAS
+    // ✅ INTERCEPTOR GLOBAL: FORZAR MAYÚSCULAS EN TIEMPO REAL
     // ==========================================
     document.addEventListener('input', function (e) {
         if ((e.target.tagName === 'INPUT' && e.target.type !== 'password' && e.target.type !== 'date' && e.target.type !== 'time') || e.target.tagName === 'TEXTAREA') {
@@ -235,6 +236,9 @@
         }
     });
 
+    // ==========================================
+    // UI Y NAVEGACIÓN
+    // ==========================================
     function showToast(message, isError = false) {
         const toast = document.getElementById("toast");
         toast.innerText = message; toast.style.backgroundColor = isError ? "var(--danger)" : "var(--success)";
@@ -286,36 +290,36 @@
     }
 
     // ==========================================
-    // 🌐 CONEXIÓN MODERNA CON APPS SCRIPT
+    // 🔗 CONEXIÓN BLINDADA JSONP (ANTI-BLOQUEOS)
     // ==========================================
     function cargarClientes() {
         if(apiURL.includes("https://script.google.com/macros/s/AKfycbySWEZLtq99Vw3G3DRtnAzfkiVlKFMUYcuJzqeMNbTA5jbCZ7Oc_cxk-PG9A6PTuBthNA/exec")) return;
         
         const inputs = document.querySelectorAll('.inputClienteCompartido');
-        inputs.forEach(inp => inp.placeholder = "⏳ DESCARGANDO CLIENTES...");
+        inputs.forEach(inp => inp.placeholder = "⏳ CONECTANDO...");
         
-        // Petición moderna 'fetch' (Ignora bloqueos de navegadores móviles)
-        fetch(apiURL)
-            .then(respuesta => respuesta.json())
-            .then(datos => {
-                const lista = document.getElementById('opcionesClientes');
-                lista.innerHTML = '';
-                
-                if (datos && datos.length > 0) {
-                    datos.forEach(cliente => {
-                        let opcion = document.createElement('option');
-                        opcion.value = cliente;
-                        lista.appendChild(opcion);
-                    });
-                    inputs.forEach(inp => inp.placeholder = "✅ " + datos.length + " CLIENTES OK");
-                } else {
-                    inputs.forEach(inp => inp.placeholder = "⚠️ EXCEL SIN CLIENTES");
-                }
-            })
-            .catch(error => {
-                inputs.forEach(inp => inp.placeholder = "❌ ERROR DE CONEXIÓN");
-                console.error("Error al descargar:", error);
-            });
+        var script = document.createElement('script');
+        script.src = apiURL + "?callback=procesarClientes";
+        script.onerror = function() {
+            inputs.forEach(inp => inp.placeholder = "❌ ERROR DE CONEXIÓN");
+        };
+        document.body.appendChild(script);
+    }
+    
+    function procesarClientes(d) {
+        const inputs = document.querySelectorAll('.inputClienteCompartido');
+        const lista = document.getElementById('opcionesClientes');
+        lista.innerHTML = ''; 
+        if(d && d.length > 0){ 
+            d.forEach(c => { 
+                let o = document.createElement('option'); 
+                o.value = c; 
+                lista.appendChild(o); 
+            }); 
+            inputs.forEach(inp => inp.placeholder = "✅ " + d.length + " LISTOS");
+        } else {
+            inputs.forEach(inp => inp.placeholder = "⚠️ SIN CLIENTES");
+        }
     }
 
     // ==========================================
