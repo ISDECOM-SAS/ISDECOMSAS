@@ -109,6 +109,15 @@
                     </div>
                     <div class="input-group"><label>DESCRIPCIÓN DEL TRABAJO *</label><textarea id="servicioR" rows="3" required></textarea></div>
                     <div class="input-group"><label>MATERIALES UTILIZADOS *</label><textarea id="materialesR" rows="2" required></textarea></div>
+                    
+                    <div class="input-group"><label>ESTADO DEL SERVICIO *</label>
+                        <select id="estadoR" required>
+                            <option value="" disabled selected>Seleccione...</option>
+                            <option value="REALIZADO">REALIZADO</option>
+                            <option value="EN PROCESO">EN PROCESO</option>
+                        </select>
+                    </div>
+
                     <div class="input-group"><label>📸 EVIDENCIAS FOTOGRÁFICAS</label><input type="file" id="fotoUploadR" accept="image/*, video/*" multiple></div>
                     <button type="submit" class="btn-primary">ENVIAR REPORTE</button>
                 </form>
@@ -355,11 +364,12 @@
         let usuarioActual = localStorage.getItem("isdecomUser") || "DESCONOCIDO";
         let d = { tipoFormulario: tipo, fotos: arr, tecnico: usuarioActual }; 
         
+        // 🔹 AQUÍ RECOLECTAMOS EL "ESTADO" DEL REPORTE PARA MANDARLO AL CEREBRO
         if (tipo==="reporte") { 
             d = {...d, tipoVisita: v('tipoVisitaR'), 
                  horaInicio: formatearAMPM(v('horaInicioR')), 
                  horaFinal: formatearAMPM(v('horaFinalR')),   
-                 cliente: v('clienteR'), sede: v('sedeR'), servicio: v('servicioR'), materiales: v('materialesR')}; 
+                 cliente: v('clienteR'), sede: v('sedeR'), servicio: v('servicioR'), materiales: v('materialesR'), estado: v('estadoR')}; 
         }
         else if (tipo==="agenda") { 
             let agendarCal = document.getElementById('syncCalendarA').checked; 
