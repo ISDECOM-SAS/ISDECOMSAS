@@ -73,7 +73,7 @@
                 <option value="JUAN FELIPE LOPEZ">JUAN FELIPE LOPEZ</option>
                 <option value="FELIPE DE LOS RIOS">FELIPE DE LOS RIOS</option>
                 <option value="FRANCISCO SANCHEZ">FRANCISCO SANCHEZ</option>
-                <option value="ELIANA">ELIANA</option>
+                <option value="ISDECOM">ELIANA</option>
             </select>
         </div>
         <div class="input-group">
@@ -109,7 +109,6 @@
                     </div>
                     <div class="input-group"><label>DESCRIPCIÓN DEL TRABAJO *</label><textarea id="servicioR" rows="3" required></textarea></div>
                     <div class="input-group"><label>MATERIALES UTILIZADOS *</label><textarea id="materialesR" rows="2" required></textarea></div>
-                    
                     <div class="input-group"><label>ESTADO DEL SERVICIO *</label>
                         <select id="estadoR" required>
                             <option value="" disabled selected>Seleccione...</option>
@@ -117,7 +116,6 @@
                             <option value="EN PROCESO">EN PROCESO</option>
                         </select>
                     </div>
-
                     <div class="input-group"><label>📸 EVIDENCIAS FOTOGRÁFICAS</label><input type="file" id="fotoUploadR" accept="image/*, video/*" multiple></div>
                     <button type="submit" class="btn-primary">ENVIAR REPORTE</button>
                 </form>
@@ -128,14 +126,14 @@
             <div class="card">
                 <h2 class="card-title">📅 NUEVA CITA</h2>
                 <form id="formAgenda">
-                    <div class="input-group"><label>CLIENTE *</label><input list="opcionesClientes" id="clienteA" class="inputClienteCompartido" autocomplete="off" required></div>
+                    <div class="input-group"><label>CLIENTE *</label><input list="opcionesClientes" id="clienteA" class="inputClienteCompartido" required></div>
                     <label class="checkbox-container"><input type="checkbox" id="syncCalendarA" style="width: auto;"> Sincronizar en Google Calendar</label>
                     <div class="input-group" style="margin-top: 15px;"><label>TAREA A REALIZAR *</label><textarea id="tareaA" rows="3" required></textarea></div>
                     <div class="grid-2">
                         <div class="input-group"><label>FECHA (Programada) *</label><input type="date" id="fechaA" required></div>
                         <div class="input-group"><label>HORA (Opcional)</label><input type="time" id="horaA"></div>
                     </div>
-                    <div class="input-group"><label>ASIGNAR A *</label><select id="asignadoA" required><option value="" disabled selected>Seleccione...</option><option>JUAN CAMILO COY</option><option>ANDRES FELIPE HENAO</option><option>CAMILO HERRERA</option><option>JUAN FELIPE LOPEZ</option><option>FELIPE DE LOS RIOS</option><option>FRANCISCO SANCHEZ</option><option>ELIANA</option></select></div>
+                    <div class="input-group"><label>ASIGNAR A *</label><select id="asignadoA" required><option value="" disabled selected>Seleccione...</option><option>JUAN CAMILO COY</option><option>ANDRES FELIPE HENAO</option><option>CAMILO HERRERA</option><option>JUAN FELIPE LOPEZ</option><option>FELIPE DE LOS RIOS</option><option>FRANCISCO SANCHEZ</option><option>ISDECOM</option></select></div>
                     <div class="input-group"><label>OBSERVACIONES</label><textarea id="observacionesA" rows="2"></textarea></div>
                     <button type="submit" class="btn-primary">AGENDAR SERVICIO</button>
                 </form>
@@ -146,7 +144,7 @@
             <div class="card">
                 <h2 class="card-title">🔬 INGRESO A LABORATORIO</h2>
                 <form id="formDispositivos">
-                    <div class="input-group"><label>CLIENTE *</label><input list="opcionesClientes" id="clienteD" class="inputClienteCompartido" autocomplete="off" required></div>
+                    <div class="input-group"><label>CLIENTE *</label><input list="opcionesClientes" id="clienteD" class="inputClienteCompartido" required></div>
                     <div class="grid-2">
                         <div class="input-group"><label>TELÉFONO *</label><input type="tel" id="telefonoD" required></div>
                         <div class="input-group"><label>CONTRASEÑA *</label><input type="text" id="contrasenaD" required></div>
@@ -164,7 +162,7 @@
             <div class="card">
                 <h2 class="card-title">🖨️ MÓDULO IMPRESORAS</h2>
                 <form id="formImpresoras">
-                    <div class="input-group"><label>CLIENTE *</label><input list="opcionesClientes" id="clienteI" class="inputClienteCompartido" autocomplete="off" required></div>
+                    <div class="input-group"><label>CLIENTE *</label><input list="opcionesClientes" id="clienteI" class="inputClienteCompartido" required></div>
                     <div class="input-group"><label>ACTIVIDAD / REPORTE *</label><textarea id="actividadI" rows="3" required></textarea></div>
                     <div class="input-group"><label>TÉCNICO QUE DEJA *</label><select id="tecnicoDejaI" required><option value="" disabled selected>SELECCIONE...</option><option>NINGUNO</option><option>JUAN CAMILO COY</option><option>ANDRES FELIPE HENAO</option><option>CAMILO HERRERA</option><option>FELIPE DE LOS RIOS</option><option>JUAN FELIPE LOPEZ</option><option>FRANCISCO SANCHEZ</option><option>ALEXANDER</option><option>COPY</option></select></div>
                     <div class="input-group"><label>OBSERVACIONES</label><textarea id="observacionesI" rows="2"></textarea></div>
@@ -178,9 +176,9 @@
             <div class="card">
                 <h2 class="card-title">🔌 TALLER ELECTRÓNICOS</h2>
                 <form id="formElectronicos">
-                    <div class="input-group"><label>CLIENTE *</label><input list="opcionesClientes" id="clienteE" class="inputClienteCompartido" autocomplete="off" required></div>
+                    <div class="input-group"><label>CLIENTE *</label><input list="opcionesClientes" id="clienteE" class="inputClienteCompartido" required></div>
                     <div class="input-group"><label>DISPOSITIVO Y REPORTE *</label><textarea id="actividadE" rows="3" required></textarea></div>
-                    <div class="input-group"><label>ASIGNADO A *</label><select id="electronicoE" required><option value="" disabled selected>SELECCIONE...</option><option>ALEXANDER</option><option>LAPTECH</option></select></div>
+                    <div class="input-group"><label>ASIGNADO A *</label><select id="electronicoE" required><option value="" disabled selected>SELECCIONE...</option><option>NINGUNO</option><option>LAPTECH</option></select></div>
                     <div class="input-group"><label>OBSERVACIONES</label><textarea id="observacionesE" rows="2"></textarea></div>
                     <div class="input-group"><label>📸 EVIDENCIAS (Opcional)</label><input type="file" id="fotoUploadE" accept="image/*, video/*" multiple></div>
                     <button type="submit" class="btn-primary">REGISTRAR DISPOSITIVO</button>
@@ -192,7 +190,7 @@
             <div class="card">
                 <h2 class="card-title">🚦 SEMÁFORO DE TAREAS</h2>
                 <form id="formSemaforo">
-                    <div class="input-group"><label>CLIENTE *</label><input list="opcionesClientes" id="clienteS" class="inputClienteCompartido" autocomplete="off" required></div>
+                    <div class="input-group"><label>CLIENTE *</label><input list="opcionesClientes" id="clienteS" class="inputClienteCompartido" required></div>
                     <div class="input-group"><label>ACTIVIDAD A REALIZAR *</label><textarea id="actividadS" rows="3" required></textarea></div>
                     <div class="grid-2">
                         <div class="input-group"><label>ASIGNADO POR *</label><select id="asignadoPorS" required><option value="" disabled selected>Seleccione...</option><option>FELIPE DE LOS RIOS</option><option>JUAN FELIPE LOPEZ</option></select></div>
@@ -218,15 +216,15 @@
 </div>
 
 <script>
-    const USUARIOS = { "JUAN CAMILO COY": "2905", "ANDRES FELIPE HENAO": "9666", "CAMILO HERRERA": "1053", "JUAN FELIPE LOPEZ": "5370", "FELIPE DE LOS RIOS": "1397", "FRANCISCO SANCHEZ": "1803", "ELIANA": "5593" };
+    const USUARIOS = { "JUAN CAMILO COY": "2905", "ANDRES FELIPE HENAO": "9666", "CAMILO HERRERA": "1053", "JUAN FELIPE LOPEZ": "5370", "FELIPE DE LOS RIOS": "1397", "FRANCISCO SANCHEZ": "1803", ELIANA": "5593" };
     
     // =========================================================
-    // 🔗 PEGA AQUÍ TU ENLACE DE APPS SCRIPT DE LA APP DE SERVICIOS
+    // 🔗 PEGA AQUÍ TU ENLACE DE APPS SCRIPT
     // =========================================================
     const apiURL = "https://script.google.com/macros/s/AKfycbySWEZLtq99Vw3G3DRtnAzfkiVlKFMUYcuJzqeMNbTA5jbCZ7Oc_cxk-PG9A6PTuBthNA/exec";
 
     // ==========================================
-    // ✅ INTERCEPTOR GLOBAL: FORZAR MAYÚSCULAS EN TIEMPO REAL
+    // ✅ INTERCEPTOR GLOBAL: FORZAR MAYÚSCULAS
     // ==========================================
     document.addEventListener('input', function (e) {
         if ((e.target.tagName === 'INPUT' && e.target.type !== 'password' && e.target.type !== 'date' && e.target.type !== 'time') || e.target.tagName === 'TEXTAREA') {
@@ -237,9 +235,6 @@
         }
     });
 
-    // ==========================================
-    // UI Y NAVEGACIÓN
-    // ==========================================
     function showToast(message, isError = false) {
         const toast = document.getElementById("toast");
         toast.innerText = message; toast.style.backgroundColor = isError ? "var(--danger)" : "var(--success)";
@@ -291,20 +286,41 @@
     }
 
     // ==========================================
-    // CONEXIÓN CON APPS SCRIPT (CEREBRO)
+    // 🌐 CONEXIÓN MODERNA CON APPS SCRIPT
     // ==========================================
     function cargarClientes() {
-        if(apiURL === "https://script.google.com/macros/s/AKfycbySWEZLtq99Vw3G3DRtnAzfkiVlKFMUYcuJzqeMNbTA5jbCZ7Oc_cxk-PG9A6PTuBthNA/exec") return;
-        const i = document.querySelectorAll('.inputClienteCompartido'); i.forEach(inp => inp.placeholder = "⏳ CONECTANDO...");
-        var s = document.createElement('script'); s.src = apiURL + (apiURL.includes('?')?'&':'?') + "callback=procesarClientes"; document.body.appendChild(s);
-    }
-    
-    function procesarClientes(d) {
-        const i = document.querySelectorAll('.inputClienteCompartido'); const l = document.getElementById('opcionesClientes'); l.innerHTML = ''; 
-        if(d && d.length>0){ d.forEach(c => { let o = document.createElement('option'); o.value=c; l.appendChild(o); }); i.forEach(inp => inp.placeholder = "✅ " + d.length + " LISTOS.");
-        } else i.forEach(inp => inp.placeholder = "⚠️ MANUAL...");
+        if(apiURL.includes("https://script.google.com/macros/s/AKfycbySWEZLtq99Vw3G3DRtnAzfkiVlKFMUYcuJzqeMNbTA5jbCZ7Oc_cxk-PG9A6PTuBthNA/exec")) return;
+        
+        const inputs = document.querySelectorAll('.inputClienteCompartido');
+        inputs.forEach(inp => inp.placeholder = "⏳ DESCARGANDO CLIENTES...");
+        
+        // Petición moderna 'fetch' (Ignora bloqueos de navegadores móviles)
+        fetch(apiURL)
+            .then(respuesta => respuesta.json())
+            .then(datos => {
+                const lista = document.getElementById('opcionesClientes');
+                lista.innerHTML = '';
+                
+                if (datos && datos.length > 0) {
+                    datos.forEach(cliente => {
+                        let opcion = document.createElement('option');
+                        opcion.value = cliente;
+                        lista.appendChild(opcion);
+                    });
+                    inputs.forEach(inp => inp.placeholder = "✅ " + datos.length + " CLIENTES OK");
+                } else {
+                    inputs.forEach(inp => inp.placeholder = "⚠️ EXCEL SIN CLIENTES");
+                }
+            })
+            .catch(error => {
+                inputs.forEach(inp => inp.placeholder = "❌ ERROR DE CONEXIÓN");
+                console.error("Error al descargar:", error);
+            });
     }
 
+    // ==========================================
+    // PROCESAMIENTO DE IMÁGENES
+    // ==========================================
     function procesarArchivo(file) {
         return new Promise((res) => {
             const r = new FileReader(); r.readAsDataURL(file);
@@ -336,7 +352,6 @@
         return arr;
     }
 
-    // ✅ FUNCIÓN CONVERSORA DE HORA (14:30 -> 02:30 PM)
     function formatearAMPM(hora24) {
         if (!hora24) return "";
         let [horas, minutos] = hora24.split(':');
@@ -364,7 +379,6 @@
         let usuarioActual = localStorage.getItem("isdecomUser") || "DESCONOCIDO";
         let d = { tipoFormulario: tipo, fotos: arr, tecnico: usuarioActual }; 
         
-        // 🔹 AQUÍ RECOLECTAMOS EL "ESTADO" DEL REPORTE PARA MANDARLO AL CEREBRO
         if (tipo==="reporte") { 
             d = {...d, tipoVisita: v('tipoVisitaR'), 
                  horaInicio: formatearAMPM(v('horaInicioR')), 
