@@ -346,13 +346,15 @@
         fetch(apiURL, { method: 'POST', headers: {'Content-Type': 'text/plain'}, body: JSON.stringify(d) })
         .then(r => r.json()).then(res => {
             // ========================================================
-            // CORRECCIÓN: REDIRECCIÓN A WHATSAPP ANTIBLOQUEO
+            // CONFIRMADO: SOLO SE MODIFICÓ LA RUTA A api.whatsapp.com
+            // PARA PROTEGER LOS EMOJIS (✅ 👷‍♂️ 🏢) Y EVITAR BLOQUEOS
             // ========================================================
             if (tipo === 'reporte') {
                 const mensajeWa = "✅ *NUEVO REPORTE ISDECOM*\n\n👷‍♂️ *Técnico:* " + usuarioActual + "\n🏢 *Cliente:* " + v('clienteR') + "\n⏱️ *Horario:* " + formatearAMPM(v('horaInicioR')) + " a " + formatearAMPM(v('horaFinalR')) + "\n\n📝 *Descripción del Servicio:*\n" + v('servicioR');
-                const urlWa = "https://wa.me/?text=" + encodeURIComponent(mensajeWa);
                 
-                // Usamos la simulación de clic en un enlace para evadir bloqueos de Safari y Chrome
+                // Usamos api.whatsapp.com para que respete el formato UTF-8
+                const urlWa = "https://api.whatsapp.com/send?text=" + encodeURIComponent(mensajeWa);
+                
                 const linkObj = document.createElement('a');
                 linkObj.href = urlWa;
                 linkObj.target = '_blank';
