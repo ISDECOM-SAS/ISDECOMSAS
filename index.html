@@ -270,9 +270,6 @@
         cargarClientes(); reiniciarT(); 
     }
 
-    // ==========================================
-    // 🔗 MOTOR DE CARGA FINAL (LIMPIO)
-    // ==========================================
     function cargarClientes() {
         const inputs = document.querySelectorAll('.inputClienteCompartido');
         fetch(apiURL)
@@ -348,16 +345,34 @@
 
         fetch(apiURL, { method: 'POST', headers: {'Content-Type': 'text/plain'}, body: JSON.stringify(d) })
         .then(r => r.json()).then(res => {
+            // ========================================================
+            // CORRECCIÓN: REDIRECCIÓN A WHATSAPP ANTIBLOQUEO
+            // ========================================================
             if (tipo === 'reporte') {
                 const mensajeWa = "✅ *NUEVO REPORTE ISDECOM*\n\n👷‍♂️ *Técnico:* " + usuarioActual + "\n🏢 *Cliente:* " + v('clienteR') + "\n⏱️ *Horario:* " + formatearAMPM(v('horaInicioR')) + " a " + formatearAMPM(v('horaFinalR')) + "\n\n📝 *Descripción del Servicio:*\n" + v('servicioR');
-                window.open("https://api.whatsapp.com/send?text=" + encodeURIComponent(mensajeWa), '_blank');
+                const urlWa = "https://wa.me/?text=" + encodeURIComponent(mensajeWa);
+                
+                // Usamos la simulación de clic en un enlace para evadir bloqueos de Safari y Chrome
+                const linkObj = document.createElement('a');
+                linkObj.href = urlWa;
+                linkObj.target = '_blank';
+                document.body.appendChild(linkObj);
+                linkObj.click();
+                document.body.removeChild(linkObj);
             }
+            // ========================================================
+            
             showLoader(false);
             if (tipo==='dispositivos') showToast("✅ TICKET CREADO: " + res.idGenerado); 
             else showToast("✅ DATOS GUARDADOS.");
+            
             document.getElementById(formId).reset(); window.scrollTo(0, 0); cargarClientes();
-        }).catch(() => { showLoader(false); showToast("❌ ERROR AL GUARDAR.", true); });
+        }).catch(() => { 
+            showLoader(false); 
+            showToast("❌ ERROR AL GUARDAR.", true); 
+        });
     }
+    
     function v(id) { return document.getElementById(id) ? document.getElementById(id).value : ""; }
 </script>
 </body>
